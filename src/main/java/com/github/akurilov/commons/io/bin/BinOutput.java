@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 
 /**
- The data item output implementation serializing something into the specified stream
+ * The item output implementation serializing something into the specified stream
  */
 public abstract class BinOutput<T>
 implements Output<T> {

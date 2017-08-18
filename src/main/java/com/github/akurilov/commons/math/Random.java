@@ -2,6 +2,9 @@ package com.github.akurilov.commons.math;
 
 import static com.github.akurilov.commons.math.MathUtil.xorShift;
 
+/**
+ * Faster random implementation which uses the XorShift algorithm
+ */
 public final class Random {
 	
 	private static final double DOUBLE_UNIT = 0x1.0p-53;

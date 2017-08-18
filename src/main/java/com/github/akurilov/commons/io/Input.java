@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- Created by andrey on 06.04.16.
+ * The Java objects input supporting the batch calls
  */
 public interface Input<I>
 extends Closeable {

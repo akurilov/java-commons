@@ -5,7 +5,7 @@ import com.github.akurilov.commons.io.Input;
 import java.nio.file.Path;
 
 /**
- Created by kurila on 20.10.15.
+ * A Java objects file input
  */
 public interface FileItemInput<T>
 extends Input<T> {

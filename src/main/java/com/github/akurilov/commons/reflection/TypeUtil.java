@@ -1,10 +1,10 @@
 package com.github.akurilov.commons.reflection;
 
-/**
- Created by andrey on 13.11.16.
- */
 public interface TypeUtil {
 
+	/**
+	 * Compare the types, allows to compare primitive types with their wrapper classes, etc
+	 */
 	static boolean typeEquals(final Class cls1, final Class cls2) {
 		if(cls1.equals(cls2)) {
 			return true;

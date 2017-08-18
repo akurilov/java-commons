@@ -1,13 +1,10 @@
 package com.github.akurilov.commons.math;
 
-/**
- * Created by kurila on 18.09.15.
- * */
 public abstract class MathUtil {
 
 	/**
 	 * Greatest common divisor
-	 * */
+	 */
 	public static int gcd(final int x, final int y) {
 		int z = 0;
 		if(x > y) {
@@ -32,7 +29,7 @@ public abstract class MathUtil {
 
 	/**
 	 * XOrShift algorithm. For details see: http://xorshift.di.unimi.it/murmurhash3.c
-	 * */
+	 */
 	private static final int A = 21, B = 35, C = 4;
 	public static long xorShift(long word) {
 		word ^= (word << A);

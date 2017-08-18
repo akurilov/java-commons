@@ -5,7 +5,7 @@ import com.github.akurilov.commons.io.Output;
 import java.nio.file.Path;
 
 /**
- Created by kurila on 11.08.15.
+ * A Java objects file output
  */
 public interface FileItemOutput<T>
 extends Output<T> {

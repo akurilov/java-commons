@@ -1,4 +1,6 @@
-package com.github.akurilov.commons.io;
+package com.github.akurilov.commons.io.text;
+
+import com.github.akurilov.commons.io.Output;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -7,7 +9,7 @@ import java.io.OutputStreamWriter;
 import java.util.List;
 
 /**
- Created by kurila on 15.11.16.
+ * The input implementation designed to write the text lines using {@link BufferedWriter}
  */
 public abstract class LinesBufferedStreamOutput
 implements Output<String> {
@@ -29,7 +31,7 @@ implements Output<String> {
 	}
 
 	public LinesBufferedStreamOutput(final OutputStream out, final int buffSize)
-		throws IOException {
+	throws IOException {
 		writer = new BufferedWriter(new OutputStreamWriter(out), buffSize);
 	}
 	
@@ -39,7 +41,11 @@ implements Output<String> {
 		writer.write(line + LINE_SEP);
 		return true;
 	}
-	
+
+	/**
+	 * Uses the thread local string builder to concatenate the lines into the single text block for better performance
+	 * @throws IOException
+	 */
 	@Override
 	public int put(final List<String> lines, final int from, final int to)
 	throws IOException {
@@ -52,7 +58,11 @@ implements Output<String> {
 		writer.write(strb.toString());
 		return to - from;
 	}
-	
+
+	/**
+	 * Uses the thread local string builder to concatenate the lines into the single text block for better performance
+	 * @throws IOException
+	 */
 	@Override
 	public int put(final List<String> lines)
 	throws IOException {

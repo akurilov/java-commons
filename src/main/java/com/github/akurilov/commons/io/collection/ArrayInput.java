@@ -7,8 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- Created by andrey on 17.08.17.
- Not thread safe.
+ Java objects array based input. Not thread safe.
  */
 public class ArrayInput<T>
 implements Input<T> {

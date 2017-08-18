@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 /**
- An item input implementation serializing something to the specified file.
+ * An item input implementation serializing something to the specified file.
  */
 public class BinFileOutput<T>
 extends BinOutput<T>
@@ -35,7 +35,10 @@ implements FileItemOutput<T> {
 		);
 		this.dstPath = dstPath;
 	}
-	
+
+	/**
+	 * Opens the temporary output file with ".bin" extension and random name.
+	 */
 	public BinFileOutput()
 	throws IOException {
 		this(Files.createTempFile(null, ".bin"));

@@ -3,7 +3,7 @@ package com.github.akurilov.commons.concurrent;
 import java.io.IOException;
 
 /**
- Created by andrey on 19.04.17.
+ The base for a stoppable task
  */
 public abstract class StoppableTaskBase
 implements StoppableTask {
@@ -30,13 +30,13 @@ implements StoppableTask {
 	}
 
 	/**
-	 The task invocation method. Will not run if the task is stopped (closed).
+	 * The task invocation method. Will not run if the task is stopped (closed).
 	 */
 	protected abstract void invoke();
 
 	/**
-	 Implement this method for the cleanup purposes.
-	 @throws IOException
+	 * Implement this method for the cleanup purposes.
+	 * @throws IOException
 	 */
 	protected abstract void doClose()
 	throws IOException;

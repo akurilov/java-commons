@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- Readable collection of the items. Not thread safe.
+ * Readable collection of the items. Not thread safe.
  */
 public class ListInput<T>
 implements Input<T> {

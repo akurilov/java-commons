@@ -8,7 +8,7 @@ import java.io.ObjectInputStream;
 import java.util.List;
 
 /**
- The data item input implementation deserializing the data items from the specified stream
+ * The item input implementation deserializing the data items from the specified stream
  */
 public class BinInput<T>
 implements Input<T> {

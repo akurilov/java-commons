@@ -1,10 +1,12 @@
 package com.github.akurilov.commons.concurrent;
 
 /**
- Created by kurila on 17.02.16.
+ * Something what may be initialized once
  */
 public interface Initializable {
 
+	/**
+	 * @return true if initialized, false otherwise
+	 */
 	boolean isInitialized();
-
 }

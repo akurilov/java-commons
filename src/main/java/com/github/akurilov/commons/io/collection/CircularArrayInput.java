@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- Created by andrey on 17.08.17.
+ An array input which may use fixed count of the items for unlimited (circular) retrieving.
  */
 public class CircularArrayInput<T>
 extends ArrayInput<T> {

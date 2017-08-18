@@ -3,7 +3,7 @@ package com.github.akurilov.commons.concurrent;
 import java.util.concurrent.Callable;
 
 /**
- Created by kurila on 11.07.16.
+ A {@link Callable} which can be initialized and should be initialized before being invoked.
  */
 public interface InitCallable<V>
 extends Initializable, Callable<V> {

@@ -1,7 +1,7 @@
 package com.github.akurilov.commons.concurrent;
 
 /**
- Created by kurila on 11.07.16.
+ A {@link Runnable} which can be initialized and should be initialized before being invoked.
  */
 public interface InitRunnable
 extends Initializable, Runnable {

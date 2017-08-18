@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- The items input which may be get infinitely (if underlying collection allows).
+ * An list which may use fixed count of the items for unlimited (circular) retrieving.
  */
 public class CircularListInput<T>
 extends ListInput<T> {

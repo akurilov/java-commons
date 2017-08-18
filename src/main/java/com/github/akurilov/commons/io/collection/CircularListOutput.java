@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- The items input which may be written infinitely (if underlying collection allows that).
+ * The items output which may be written infinitely.
  */
 public class CircularListOutput<T>
 extends ListOutput<T> {

@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 /**
- An item input implementation deserializing something from the specified file.
+ * An item input implementation deserializing something from the specified file.
  */
 public class BinFileInput<T>
 extends BinInput<T>

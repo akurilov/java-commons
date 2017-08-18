@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import static java.lang.System.nanoTime;
 
 /**
- Created by kurila on 04.04.16.
+ * A semaphore-like non-blocking throttle which permits at the given rate.
  */
 public final class RateThrottle<X>
 implements Throttle<X> {
@@ -14,6 +14,9 @@ implements Throttle<X> {
 	private volatile long startTime = -1;
 	private volatile long acquiredCount = 0;
 
+	/**
+	 * @param rateLimit The rate (permits/sec) limit for the permits
+	 */
 	public RateThrottle(final double rateLimit) {
 		if(rateLimit <= 0) {
 			throw new IllegalArgumentException(

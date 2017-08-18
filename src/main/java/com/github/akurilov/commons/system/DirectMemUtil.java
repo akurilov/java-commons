@@ -5,8 +5,16 @@ import sun.nio.ch.DirectBuffer;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 
+/**
+ * Utility methods to work with direct (off-heap) memory
+ */
 public interface DirectMemUtil {
 
+	/**
+	 * Don't wait for GC to free the direct memory allocated by the given byte buffer instance.
+	 * Free the direct memory immediately using hidden/proprietary JVM API.
+	 * @return false if the specified buffer is null (needed for chained calls)
+	 */
 	static boolean free(final MappedByteBuffer buff) {
 		if(buff == null) {
 			return false;
@@ -27,6 +35,13 @@ public interface DirectMemUtil {
 		}
 	);
 
+	/**
+	 * Selects the thread local direct byte buffer fitting the requested buffer size. Useful for I/O.
+	 * @param size the requested buffer size
+	 * @return the buffer which size may be in the range of {@link DirectMemUtil#REUSABLE_BUFF_SIZE_MIN} and
+	 * {@link DirectMemUtil#REUSABLE_BUFF_SIZE_MAX}
+	 * @throws IllegalArgumentException if the requested size is less than 0
+	 */
 	static MappedByteBuffer getThreadLocalReusableBuff(final long size)
 	throws IllegalArgumentException {
 

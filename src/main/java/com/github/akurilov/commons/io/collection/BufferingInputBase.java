@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- Created by andrey on 02.12.16.
- Not thread safe.
+ * An abstract input which is designed to load more items when it's needed to get more items.
+ * <b>Not thread safe</b>.
  */
 public abstract class BufferingInputBase<T>
 extends ListInput<T> {

@@ -6,8 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- Created by kurila on 18.06.15.
- Writable collection of the items.
+ * Writable collection of the items. Not thread safe.
  */
 public class ListOutput<T>
 implements Output<T> {

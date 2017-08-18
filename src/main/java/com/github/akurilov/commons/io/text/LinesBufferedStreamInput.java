@@ -1,4 +1,6 @@
-package com.github.akurilov.commons.io;
+package com.github.akurilov.commons.io.text;
+
+import com.github.akurilov.commons.io.Input;
 
 import java.io.BufferedReader;
 import java.io.EOFException;
@@ -8,7 +10,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 /**
- Created by kurila on 15.11.16.
+ * The input implementation designed to read the text lines from the given input stream using {@link BufferedReader}
  */
 public class LinesBufferedStreamInput
 implements Input<String> {
@@ -22,13 +24,22 @@ implements Input<String> {
 	public LinesBufferedStreamInput(final InputStream input, final int buffSize) {
 		reader = new BufferedReader(new InputStreamReader(input), buffSize);
 	}
-	
+
+	/**
+	 * @return next text line from the given input stream
+	 */
 	@Override
 	public String get()
 	throws EOFException, IOException {
 		return reader.readLine();
 	}
-	
+
+	/**
+	 * Get some lines
+	 * @param buffer buffer for the text lines
+	 * @param limit max count of the text lines to put into the buffer
+	 * @return the count of the text lines was got
+	 */
 	@Override
 	public int get(final List<String> buffer, final int limit)
 	throws IOException {
@@ -46,7 +57,7 @@ implements Input<String> {
 	}
 	
 	/**
-	 Skips bytes instead of items
+	 * Skips characters instead of lines
 	 */
 	@Override
 	public long skip(final long count)
@@ -55,8 +66,8 @@ implements Input<String> {
 	}
 	
 	/**
-	 Most probably will cause an IOException
-	 @throws IOException
+	 * Most probably will cause an IOException
+	 * @throws IOException
 	 */
 	@Override
 	public void reset()

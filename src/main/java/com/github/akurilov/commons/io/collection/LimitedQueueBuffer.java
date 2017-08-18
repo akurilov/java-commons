@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 /**
- The blocking queue wrapped in order to act as output from the tail and as input from the head.
+ * The blocking queue wrapped in order to act as output from the tail and as input from the head.
  */
 public class LimitedQueueBuffer<T>
 implements IoBuffer<T> {

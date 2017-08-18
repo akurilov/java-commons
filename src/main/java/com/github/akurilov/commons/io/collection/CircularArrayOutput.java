@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- Created by andrey on 17.08.17.
+ An array output which may use fixed space for unlimited (circular) storing.
  */
 public class CircularArrayOutput<T>
 extends ArrayOutput<T> {
