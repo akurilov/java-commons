@@ -90,23 +90,24 @@ uploadArchives {
 
 			pom {
 
+				name = rootProject.name
 				groupId = rootProject.group
 
 				project {
 					description = rootProject.description
 
-					url "https://github.com/emc-mongoose/mongoose/wiki"
+					url "https://github.com/akurilov/java-commons"
 
 					scm {
-						connection "https://github.com/emc-mongoose/mongoose.git"
-						developerConnection "https://github.com/emc-mongoose/mongoose.git"
-						url "https://github.com/emc-mongoose/mongoose.git"
+						connection "https://github.com/akurilov/java-commons.git"
+						developerConnection "https://github.com/akurilov/java-commons.git"
+						url "https://github.com/akurilov/java-commons.git"
 					}
 
 					licenses {
 						license {
-							name "The MIT License (MIT)"
-							url "https://github.com/emc-mongoose/mongoose/wiki/License"
+							name "Apache License 2.0"
+							url "https://github.com/akurilov/java-commons/blob/master/LICENSE"
 						}
 					}
 
