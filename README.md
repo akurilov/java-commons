@@ -6,7 +6,7 @@
 compile group: 'com.github.akurilov', name: 'java-commons', version: '1.0.0'
 ```
 
-# Library C
+# Library Content
 
 ## Collections
 ### Optionally Locking Buffer
