@@ -11,7 +11,7 @@ allprojects {
 	apply plugin: "maven"
 	apply plugin: "signing"
 	group = "com.github.akurilov"
-	version = "1.0.0"
+	version = "1.0.1"
 }
 
 tasks.withType(JavaCompile) {
@@ -24,6 +24,7 @@ repositories {
 }
 
 dependencies {
+	compile("org.apache.commons:commons-collections4:4.1")
 	testCompile("junit:junit:4.12")
 }
 
@@ -144,8 +145,4 @@ task printVersion {
 	group = "versioning"
 	description = "Prints version."
 	doLast { logger.quiet "Java-commons version: $version" }
-}
-
-String defineVersion() {
-	"1.0.0"
 }
