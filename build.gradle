@@ -27,6 +27,16 @@ dependencies {
 	testCompile("junit:junit:4.12")
 }
 
+jar {
+	manifest {
+		attributes (
+			"Implementation-Version": version,
+			"Implementation-Title": rootProject.name,
+		)
+	}
+	from "." include "LICENSE"
+}
+
 task sourcesJar(type: Jar, dependsOn: classes) {
 	classifier = "sources"
 	from sourceSets.main.allSource
