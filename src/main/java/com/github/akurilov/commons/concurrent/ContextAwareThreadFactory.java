@@ -39,9 +39,9 @@ implements ThreadFactory {
 	public static class ContextAwareThread
 	extends Thread {
 
-		private final Map<String, String> threadContext;
+		protected final Map<String, String> threadContext;
 
-		private ContextAwareThread(
+		protected ContextAwareThread(
 			final Runnable task, final String name, final boolean daemonFlag,
 			final UncaughtExceptionHandler exceptionHandler, final Map<String, String> threadContext
 		) {
@@ -60,7 +60,7 @@ implements ThreadFactory {
 	}
 
 	@Override
-	public final String toString() {
+	public String toString() {
 		return threadNamePrefix;
 	}
 }
