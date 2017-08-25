@@ -10,7 +10,7 @@ import java.nio.file.Path;
 
 /**
  * <p>An item input implementation serializing something to the specified file.</p>
- * </p><b>WARNING</b>: doesn't support the appending of the previously used output file (already
+ * <p><b>WARNING</b>: doesn't support the appending of the previously used output file (already
  * containing the data which had been output earlier). This limitation is due to Java serialization,
  * which adds the new header on each new ObjectOutputStream instance.</p>
  */
