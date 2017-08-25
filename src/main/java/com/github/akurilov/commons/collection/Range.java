@@ -10,7 +10,16 @@ public final class Range {
 	private final long beg;
 	private final long end;
 	private final long size;
-	
+
+	/**
+	 * Copy constructor
+	 */
+	public Range(final Range other) {
+		this.beg = other.getBeg();
+		this.end = other.getEnd();
+		this.size = other.getSize();
+	}
+
 	public Range(final long beg, final long end, final long size) {
 		this.beg = beg;
 		this.end = end;
