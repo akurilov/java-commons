@@ -1,4 +1,4 @@
-package com.github.akurilov.commons.io.bin;
+package com.github.akurilov.commons.io;
 
 import com.github.akurilov.commons.io.Input;
 

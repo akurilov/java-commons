@@ -1,20 +1,22 @@
-package com.github.akurilov.commons.io.bin.file;
+package com.github.akurilov.commons.io.file;
 
-import com.github.akurilov.commons.io.bin.BinOutput;
+import com.github.akurilov.commons.io.BinOutput;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 
 /**
- * An item input implementation serializing something to the specified file.
+ * <p>An item input implementation serializing something to the specified file.</p>
+ * </p><b>WARNING</b>: doesn't support the appending of the previously used output file (already
+ * containing the data which had been output earlier). This limitation is due to Java serialization,
+ * which adds the new header on each new ObjectOutputStream instance.</p>
  */
 public class BinFileOutput<T>
 extends BinOutput<T>
-implements FileItemOutput<T> {
+implements FileOutput<T> {
 	
 	protected final Path dstPath;
 
@@ -26,11 +28,7 @@ implements FileItemOutput<T> {
 	throws IOException {
 		super(
 			new ObjectOutputStream(
-				new BufferedOutputStream(
-					Files.newOutputStream(
-						dstPath, StandardOpenOption.APPEND, StandardOpenOption.WRITE
-					)
-				)
+				new BufferedOutputStream(Files.newOutputStream(dstPath, OUTPUT_OPEN_OPTIONS))
 			)
 		);
 		this.dstPath = dstPath;

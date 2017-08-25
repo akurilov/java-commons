@@ -1,4 +1,4 @@
-package com.github.akurilov.commons.io.text;
+package com.github.akurilov.commons.io;
 
 import com.github.akurilov.commons.io.Output;
 
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * The input implementation designed to write the text lines using {@link BufferedWriter}
  */
-public abstract class LinesBufferedStreamOutput
+public abstract class TextStreamOutput
 implements Output<String> {
 	
 	private static final ThreadLocal<StringBuilder> THRLOC_STRB = new ThreadLocal<StringBuilder>() {
@@ -25,12 +25,12 @@ implements Output<String> {
 	
 	protected final BufferedWriter writer;
 
-	public LinesBufferedStreamOutput(final OutputStream out)
+	public TextStreamOutput(final OutputStream out)
 	throws IOException {
 		writer = new BufferedWriter(new OutputStreamWriter(out));
 	}
 
-	public LinesBufferedStreamOutput(final OutputStream out, final int buffSize)
+	public TextStreamOutput(final OutputStream out, final int buffSize)
 	throws IOException {
 		writer = new BufferedWriter(new OutputStreamWriter(out), buffSize);
 	}
