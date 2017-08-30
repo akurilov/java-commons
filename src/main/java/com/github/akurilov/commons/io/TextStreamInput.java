@@ -1,4 +1,4 @@
-package com.github.akurilov.commons.io.text;
+package com.github.akurilov.commons.io;
 
 import com.github.akurilov.commons.io.Input;
 
@@ -12,16 +12,16 @@ import java.util.List;
 /**
  * The input implementation designed to read the text lines from the given input stream using {@link BufferedReader}
  */
-public class LinesBufferedStreamInput
+public class TextStreamInput
 implements Input<String> {
 
 	private final BufferedReader reader;
 	
-	public LinesBufferedStreamInput(final InputStream input) {
+	public TextStreamInput(final InputStream input) {
 		reader = new BufferedReader(new InputStreamReader(input));
 	}
 
-	public LinesBufferedStreamInput(final InputStream input, final int buffSize) {
+	public TextStreamInput(final InputStream input, final int buffSize) {
 		reader = new BufferedReader(new InputStreamReader(input), buffSize);
 	}
 
@@ -31,7 +31,11 @@ implements Input<String> {
 	@Override
 	public String get()
 	throws EOFException, IOException {
-		return reader.readLine();
+		final String nextLine = reader.readLine();
+		if(nextLine == null) {
+			throw new EOFException();
+		}
+		return nextLine;
 	}
 
 	/**
@@ -45,8 +49,18 @@ implements Input<String> {
 	throws IOException {
 		int i = 0;
 		try {
+			String nextLine;
 			for(; i < limit; i ++) {
-				buffer.add(reader.readLine());
+				nextLine = reader.readLine();
+				if(nextLine == null) {
+					if(i == 0) {
+						throw new EOFException();
+					} else {
+						break;
+					}
+				} else {
+					buffer.add(nextLine);
+				}
 			}
 		} catch(final IOException e) {
 			if(i == 0) {

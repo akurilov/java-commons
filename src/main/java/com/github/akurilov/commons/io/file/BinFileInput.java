@@ -1,20 +1,19 @@
-package com.github.akurilov.commons.io.bin.file;
+package com.github.akurilov.commons.io.file;
 
-import com.github.akurilov.commons.io.bin.BinInput;
+import com.github.akurilov.commons.io.BinInput;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 
 /**
  * An item input implementation deserializing something from the specified file.
  */
 public class BinFileInput<T>
 extends BinInput<T>
-implements FileItemInput<T> {
+implements FileInput<T> {
 	
 	protected final Path srcPath;
 
@@ -31,7 +30,7 @@ implements FileItemInput<T> {
 	protected static ObjectInputStream buildObjectInputStream(final Path itemsSrcPath)
 	throws IOException {
 		return new ObjectInputStream(
-			new BufferedInputStream(Files.newInputStream(itemsSrcPath, StandardOpenOption.READ))
+			new BufferedInputStream(Files.newInputStream(itemsSrcPath, INPUT_OPEN_OPTIONS))
 		);
 	}
 	
