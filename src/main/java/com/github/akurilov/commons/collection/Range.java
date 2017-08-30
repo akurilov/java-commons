@@ -2,14 +2,23 @@ package com.github.akurilov.commons.collection;
 
 import com.github.akurilov.commons.system.SizeInBytes;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /**
  * The range described with at least one bound (begin or end position) and optional size.
  */
-public final class Range {
+public final class Range
+implements Externalizable {
 	
-	private final long beg;
-	private final long end;
-	private final long size;
+	private long beg;
+	private long end;
+	private long size;
+
+	public Range() {
+	}
 
 	/**
 	 * Copy constructor
@@ -108,5 +117,21 @@ public final class Range {
 		} else {
 			return beg + "-" + end;
 		}
+	}
+
+	@Override
+	public final void writeExternal(final ObjectOutput out)
+	throws IOException {
+		out.writeLong(beg);
+		out.writeLong(end);
+		out.writeLong(size);
+	}
+
+	@Override
+	public final void readExternal(ObjectInput in)
+	throws IOException, ClassNotFoundException {
+		beg = in.readLong();
+		end = in.readLong();
+		size = in.readLong();
 	}
 }
