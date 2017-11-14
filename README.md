@@ -3,10 +3,14 @@
 ## Gradle
 
 ```groovy
-compile group: 'com.github.akurilov', name: 'java-commons', version: '1.0.8'
+compile group: 'com.github.akurilov', name: 'java-commons', version: '1.11'
 ```
 
 # Library Content
+
+**Note**:
+> Contains part of the [fastutil](http://fastutil.di.unimi.it/) library
+> sources under the original package `it.unimi.dsi.fastutil`
 
 ## Collections
 
