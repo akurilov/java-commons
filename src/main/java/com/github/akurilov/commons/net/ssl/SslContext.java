@@ -1,8 +1,5 @@
 package com.github.akurilov.commons.net.ssl;
 
-import com.emc.mongoose.api.common.exception.Fireball;
-import com.emc.mongoose.api.common.exception.OmgDoesNotPerformException;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import java.security.KeyManagementException;
@@ -17,24 +14,20 @@ public final class SslContext {
 	private SslContext() {}
 
 	private static SSLContext getInstance()
-	throws OmgDoesNotPerformException {
-		try {
-			final SSLContext sslContext = SSLContext.getInstance("TLS");
-			sslContext.init(
-				null, new TrustManager[] { X509TrustAllManager.INSTANCE }, new SecureRandom()
-			);
-			return sslContext;
-		} catch(final NoSuchAlgorithmException | KeyManagementException e) {
-			throw new OmgDoesNotPerformException(e);
-		}
+	throws NoSuchAlgorithmException, KeyManagementException {
+		final SSLContext sslContext = SSLContext.getInstance("TLS");
+		sslContext.init(
+			null, new TrustManager[] { X509TrustAllManager.INSTANCE }, new SecureRandom()
+		);
+		return sslContext;
 	}
 
-	public static volatile SSLContext INSTANCE;
+	public static final SSLContext INSTANCE;
 	static {
 		try {
 			INSTANCE = getInstance();
-		} catch(final Fireball e) {
-			e.printStackTrace(System.err);
+		} catch(final Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 }
