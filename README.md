@@ -10,7 +10,8 @@ compile group: 'com.github.akurilov', name: 'java-commons', version: '1.2.0'
 
 **Note**:
 > Contains part of the [fastutil](http://fastutil.di.unimi.it/) library
-> sources under the original package `it.unimi.dsi.fastutil`
+> sources (version 7.0.13) under the original package
+> `it.unimi.dsi.fastutil`
 
 ## Collections
 
