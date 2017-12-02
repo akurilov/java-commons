@@ -1,7 +1,5 @@
 package com.github.akurilov.commons.io;
 
-import com.github.akurilov.commons.io.Input;
-
 import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.IOException;
