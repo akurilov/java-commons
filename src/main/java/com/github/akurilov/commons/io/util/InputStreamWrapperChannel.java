@@ -8,28 +8,27 @@ public class InputStreamWrapperChannel
 extends BufferedByteChannelBase
 implements BufferedReadableByteChannel {
 
-	private final InputStream in;
+	private InputStream in = null;
 
-	public InputStreamWrapperChannel(final InputStream in, final int buffSize) {
+	public InputStreamWrapperChannel(final int buffSize) {
 		super(buffSize);
-		this.in = in;
 	}
 
 	@Override
 	public final int read(final ByteBuffer dst)
-		throws IOException {
+	throws IOException {
 		final int n = in.read(bb, 0, Math.min(bb.length, dst.remaining()));
 		dst.put(bb, 0, n);
 		return n;
 	}
 
-	private final static ThreadLocal<BufferedReadableByteChannel[]>
+	private final static ThreadLocal<InputStreamWrapperChannel[]>
 		REUSABLE_INPUT_CHANNELS = ThreadLocal.withInitial(
 			() -> {
 				final int count = (int) (
 					Math.log(REUSABLE_BUFF_SIZE_MAX / REUSABLE_BUFF_SIZE_MIN) / Math.log(2) + 1
 				);
-				return new BufferedReadableByteChannel[count];
+				return new InputStreamWrapperChannel[count];
 			}
 		);
 
@@ -49,7 +48,8 @@ implements BufferedReadableByteChannel {
 			throw new IllegalArgumentException("Requested negative size: " + remainingSize);
 		}
 
-		final BufferedReadableByteChannel[] threadLocalReusableChannels = REUSABLE_INPUT_CHANNELS.get();
+		final InputStreamWrapperChannel[]
+			threadLocalReusableChannels = REUSABLE_INPUT_CHANNELS.get();
 		long currBuffSize = Long.highestOneBit(remainingSize);
 		if(currBuffSize > REUSABLE_BUFF_SIZE_MAX) {
 			currBuffSize = REUSABLE_BUFF_SIZE_MAX;
@@ -61,12 +61,13 @@ implements BufferedReadableByteChannel {
 			}
 		}
 		final int i = Long.numberOfTrailingZeros(currBuffSize);
-		BufferedReadableByteChannel chan = threadLocalReusableChannels[i];
+		InputStreamWrapperChannel chan = threadLocalReusableChannels[i];
 
 		if(chan == null) {
-			chan = new InputStreamWrapperChannel(in, (int) currBuffSize);
+			chan = new InputStreamWrapperChannel((int) currBuffSize);
 			threadLocalReusableChannels[i] = chan;
 		}
+		chan.in = in;
 
 		return chan;
 	}
