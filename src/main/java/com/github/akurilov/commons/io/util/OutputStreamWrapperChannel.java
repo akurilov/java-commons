@@ -75,4 +75,11 @@ implements BufferedWritableByteChannel {
 
 		return chan;
 	}
+
+	@Override
+	public void close()
+	throws IOException {
+		out.flush();
+		out = null;
+	}
 }

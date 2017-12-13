@@ -71,4 +71,10 @@ implements BufferedReadableByteChannel {
 
 		return chan;
 	}
+
+	@Override
+	public void close()
+	throws IOException {
+		in = null;
+	}
 }

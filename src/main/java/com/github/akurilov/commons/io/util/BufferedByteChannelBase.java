@@ -3,7 +3,7 @@ package com.github.akurilov.commons.io.util;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-public class BufferedByteChannelBase
+public abstract class BufferedByteChannelBase
 implements BufferedByteChannel {
 
 	protected static final int REUSABLE_BUFF_SIZE_MIN = 1;
@@ -25,10 +25,5 @@ implements BufferedByteChannel {
 	@Override
 	public boolean isOpen() {
 		return true;
-	}
-
-	@Override
-	public void close()
-	throws IOException {
 	}
 }
