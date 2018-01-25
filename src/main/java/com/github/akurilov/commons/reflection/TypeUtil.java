@@ -1,4 +1,4 @@
-package com.github.akurilov.commons.lang;
+package com.github.akurilov.commons.reflection;
 
 public interface TypeUtil {
 
