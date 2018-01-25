@@ -57,4 +57,12 @@ public interface NetUtil {
 	throws SocketException, IllegalStateException {
 		return getHostAddrString().hashCode();
 	}
+
+	static String addPortIfMissing(final String addr, final int defaultPort) {
+		if(addr.contains(":")) {
+			return addr;
+		} else {
+			return addr + ':' + Integer.toString(defaultPort);
+		}
+	}
 }
