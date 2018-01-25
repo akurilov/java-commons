@@ -1,4 +1,4 @@
-package com.github.akurilov.commons.reflection;
+package com.github.akurilov.commons.lang;
 
 import org.junit.Test;
 import static org.junit.Assert.assertFalse;
@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Method;
 
-import static com.github.akurilov.commons.reflection.TypeUtil.typeEquals;
+import static com.github.akurilov.commons.lang.TypeUtil.typeEquals;
 
 /**
  Created by andrey on 13.11.16.
