@@ -8,11 +8,6 @@ compile group: 'com.github.akurilov', name: 'java-commons', version: '1.4.1'
 
 # Library Content
 
-**Note**:
-> Contains part of the [fastutil](http://fastutil.di.unimi.it/) library
-> sources (version 7.0.13) under the original package
-> `it.unimi.dsi.fastutil`
-
 ## Collections
 
 ### Optionally Locking Buffer
@@ -26,16 +21,6 @@ Publishing the ```ArrayList.removeRange(from, to)``` method allows to recycle th
 partially consumed w/o redundant instantiation. The interface ```OptLockBuffer``` is designed to support the range removing method.
 
 ### Range
-
-TODO
-
-## Concurrency
-
-### Throttle
-
-TODO
-
-### Stoppable Task
 
 TODO
 
