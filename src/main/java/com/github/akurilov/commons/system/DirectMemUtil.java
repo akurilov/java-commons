@@ -1,7 +1,5 @@
 package com.github.akurilov.commons.system;
 
-import sun.nio.ch.DirectBuffer;
-
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 
@@ -9,19 +7,6 @@ import java.nio.MappedByteBuffer;
  * Utility methods to work with direct (off-heap) memory
  */
 public interface DirectMemUtil {
-
-	/**
-	 * Don't wait for GC to free the direct memory allocated by the given byte buffer instance.
-	 * Free the direct memory immediately using hidden/proprietary JVM API.
-	 * @return false if the specified buffer is null (needed for chained calls)
-	 */
-	static boolean free(final MappedByteBuffer buff) {
-		if(buff == null) {
-			return false;
-		}
-		((DirectBuffer) buff).cleaner().clean();
-		return true;
-	}
 
 	int REUSABLE_BUFF_SIZE_MIN = 1;
 	int REUSABLE_BUFF_SIZE_MAX = 0x1000000; // 16MB

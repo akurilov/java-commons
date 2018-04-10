@@ -28,6 +28,16 @@ dependencies {
 	testCompile("junit:junit:4.12")
 }
 
+compileJava {
+	inputs.property("moduleName", moduleName)
+	doFirst {
+		options.compilerArgs = [
+			'--module-path', classpath.asPath,
+		]
+		classpath = files()
+	}
+}
+
 jar {
 	manifest {
 		attributes (
@@ -137,7 +147,7 @@ uploadArchives {
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = "3.5"
+	gradleVersion = "4.6"
 }
 
 task printVersion {
