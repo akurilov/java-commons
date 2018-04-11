@@ -3,7 +3,6 @@ package com.github.akurilov.commons.system;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**

@@ -1,7 +1,5 @@
 package com.github.akurilov.commons.io;
 
-import com.github.akurilov.commons.io.Input;
-
 import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;

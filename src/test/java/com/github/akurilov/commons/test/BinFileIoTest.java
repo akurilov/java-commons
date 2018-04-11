@@ -1,4 +1,4 @@
-package com.github.akurilov.commons.io.file;
+package com.github.akurilov.commons.test;
 
 import com.github.akurilov.commons.io.file.BinFileInput;
 import com.github.akurilov.commons.io.file.BinFileOutput;

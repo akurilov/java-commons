@@ -1,4 +1,4 @@
-package com.github.akurilov.commons.system;
+package com.github.akurilov.commons.test;
 
 import com.github.akurilov.commons.system.DirectMemUtil;
 import org.junit.Test;

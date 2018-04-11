@@ -1,7 +1,5 @@
 package com.github.akurilov.commons.io;
 
-import com.github.akurilov.commons.io.Output;
-
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;

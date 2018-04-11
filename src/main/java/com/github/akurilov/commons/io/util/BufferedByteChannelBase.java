@@ -1,6 +1,5 @@
 package com.github.akurilov.commons.io.util;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public abstract class BufferedByteChannelBase

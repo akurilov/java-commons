@@ -45,7 +45,7 @@ compileTestJava {
 		options.compilerArgs = [
 			"--module-path", classpath.asPath,
 			"--add-modules", "ALL-MODULE-PATH",
-			"--add-reads", "$moduleName=junit",
+			"--add-reads", "${moduleName}.test=junit",
 			"--patch-module", "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
 		]
 		classpath = files()
@@ -86,17 +86,17 @@ artifacts {
 test {
 	inputs.property("moduleName", moduleName)
 	doFirst {
-		jvmArgs = [
+		jvmArgs += [
+			"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005",
+			"-XX:+HeapDumpOnOutOfMemoryError",
 			"--module-path", classpath.asPath,
+			'--add-exports', "$moduleName/${moduleName}.test=junit",
 			"--add-modules", "ALL-MODULE-PATH",
-			"--add-reads", "$moduleName=junit",
+			"--add-reads", "${moduleName}.test=junit",
 			"--patch-module", "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
 		]
 		classpath = files()
 	}
-	jvmArgs "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
-	jvmArgs "-XX:MaxDirectMemorySize=1g"
-	jvmArgs "-XX:+HeapDumpOnOutOfMemoryError"
 	maxHeapSize "1g"
 	systemProperty "com.sun.management.jmxremote", "true"
 	systemProperty "com.sun.management.jmxremote.port", "9010"

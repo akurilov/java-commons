@@ -1,7 +1,5 @@
 package com.github.akurilov.commons.math;
 
-import static com.github.akurilov.commons.math.MathUtil.xorShift;
-
 /**
  * Faster random implementation which uses the XorShift algorithm
  */
@@ -24,7 +22,7 @@ public final class Random {
 	}
 
 	public final long nextLong() {
-		return seed = xorShift(seed);
+		return seed = MathUtil.xorShift(seed);
 	}
 
 	public final long nextLong(final long range) {
@@ -40,7 +38,7 @@ public final class Random {
 	}
 
 	public final double nextDouble() {
-		seed = xorShift(seed);
+		seed = MathUtil.xorShift(seed);
 		return (((seed >>> 22) << 27) + (seed >>> 21)) * DOUBLE_UNIT;
 	}
 }
