@@ -15,7 +15,7 @@ public final class SslContext {
 
 	private static SSLContext getInstance()
 	throws NoSuchAlgorithmException, KeyManagementException {
-		final SSLContext sslContext = SSLContext.getInstance("TLS");
+		final var sslContext = SSLContext.getInstance("TLS");
 		sslContext.init(
 			null, new TrustManager[] { X509TrustAllManager.INSTANCE }, new SecureRandom()
 		);

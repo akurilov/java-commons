@@ -35,7 +35,7 @@ extends ArrayInput<T> {
 	@Override
 	public int get(final List<T> buffer, final int maxCount)
 	throws EOFException, IOException {
-		int n = 0;
+		var n = 0;
 		while(n < maxCount) {
 			if(i >= size) {
 				reset();

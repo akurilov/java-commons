@@ -45,10 +45,10 @@ implements Input<T> {
 	@Override
 	public int get(final List<T> buffer, final int maxCount)
 	throws EOFException, IOException {
-		int n = size - i;
+		var n = size - i;
 		if(n > 0) {
 			n = Math.min(n, maxCount);
-			for(final T item : items.subList(i, i + n)) {
+			for(final var item : items.subList(i, i + n)) {
 				buffer.add(item);
 			}
 		} else {
@@ -70,7 +70,7 @@ implements Input<T> {
 	@Override
 	public long skip(final long itemsCount)
 	throws IOException {
-		final int remainingCount = size - i;
+		final var remainingCount = size - i;
 		if(itemsCount > remainingCount) {
 			i = 0;
 			return remainingCount;

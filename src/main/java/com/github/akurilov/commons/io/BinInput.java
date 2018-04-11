@@ -33,7 +33,7 @@ implements Input<T> {
 			return srcBuff[srcBuffPos ++];
 		} else {
 			try {
-				final Object o = itemsSrc.readUnshared();
+				final var o = itemsSrc.readUnshared();
 				if(o instanceof Object[]) {
 					srcBuff = (T[]) o;
 					srcBuffPos = 0;
@@ -52,15 +52,15 @@ implements Input<T> {
 	throws IOException {
 		
 		if(srcBuff != null) { // there are a buffered items in the source
-			final int srcCountLimit = srcBuff.length - srcBuffPos;
+			final var srcCountLimit = srcBuff.length - srcBuffPos;
 			if(dstCountLimit < srcCountLimit) { // destination buffer has less free space than avail
-				for(int i = srcBuffPos; i < srcBuffPos + dstCountLimit; i ++) {
+				for(var i = srcBuffPos; i < srcBuffPos + dstCountLimit; i ++) {
 					dstBuff.add(srcBuff[i]);
 				}
 				srcBuffPos += dstCountLimit; // move cursor to the next position in the source buffer
 				return dstCountLimit;
 			} else { // destination buffer has enough free space to put all available items
-				for(int i = srcBuffPos; i < srcBuffPos + srcCountLimit; i ++) {
+				for(var i = srcBuffPos; i < srcBuffPos + srcCountLimit; i ++) {
 					dstBuff.add(srcBuff[i]);
 				}
 				srcBuff = null; // the buffer is sent to destination completely, dispose
@@ -69,7 +69,7 @@ implements Input<T> {
 		}
 		
 		try {
-			final Object o = itemsSrc.readUnshared();
+			final var o = itemsSrc.readUnshared();
 			if(o instanceof Object[]) { // there are a list of items has been got
 				srcBuff = (T[]) o;
 				srcBuffPos = 0;
