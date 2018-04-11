@@ -24,7 +24,7 @@ extends LRUMap<K, V> implements Listable<V> {
 
 	@Override
 	public V put(final K key, final V value) {
-		final V oldValue = super.put(key, value);
+		final var oldValue = super.put(key, value);
 		if(null == oldValue) {
 			size.incrementAndGet();
 		}
@@ -33,7 +33,7 @@ extends LRUMap<K, V> implements Listable<V> {
 
 	@Override
 	public V remove(final Object key) {
-		final V value = super.remove(key);
+		final var value = super.remove(key);
 		if(value != null) {
 			size.decrementAndGet();
 		}
@@ -45,8 +45,8 @@ extends LRUMap<K, V> implements Listable<V> {
 		if(isEmpty()) {
 			return null;
 		}
-		LinkEntry<K, V> nextEntry = getEntry(afterObjectId);
-		for(int i = 0; i < limit; i++) {
+		var nextEntry = getEntry(afterObjectId);
+		for(var i = 0; i < limit; i++) {
 			if(nextEntry == null) {
 				nextEntry = getEntry(firstKey());
 			} else {
@@ -61,9 +61,7 @@ extends LRUMap<K, V> implements Listable<V> {
 	}
 
 	@Override
-	protected void moveToMRU(
-		final LinkEntry<K, V> entry
-	) {
+	protected void moveToMRU(final LinkEntry<K, V> entry) {
 		// disable entry moving to MRU in case of access
 		// it's required to make list method (right below) working (keeping the linked list order)
 	}

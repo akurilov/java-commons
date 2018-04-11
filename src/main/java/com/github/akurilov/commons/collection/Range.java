@@ -68,7 +68,7 @@ implements Externalizable {
 				throw new InvalidRangeException("Invalid range string: \""+ rawRange + "\"");
 			}
 		} else if(rawRange.contains("-")){
-			final String[] pair = rawRange.split("-");
+			final var pair = rawRange.split("-");
 			if(pair.length == 2) {
 				beg = SizeInBytes.toFixedSize(pair[0]);
 				end = SizeInBytes.toFixedSize(pair[1]);

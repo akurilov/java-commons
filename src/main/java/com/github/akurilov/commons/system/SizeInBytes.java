@@ -27,7 +27,7 @@ public final class SizeInBytes
 	public static long toFixedSize(final String value)
 		throws NumberFormatException {
 		final String unit;
-		final Matcher matcher = PATTERN_SIZE.matcher(value.toLowerCase());
+		final var matcher = PATTERN_SIZE.matcher(value.toLowerCase());
 		double size;
 		long degree;
 		if(matcher.matches() && matcher.groupCount() > 0 && matcher.groupCount() < 3) {
@@ -60,10 +60,10 @@ public final class SizeInBytes
 		if(v < 1024) {
 			return v + "B";
 		}
-		final int z = (63 - Long.numberOfLeadingZeros(v)) / 10;
-		final double x = (double) v / (1L << (z * 10));
+		final var z = (63 - Long.numberOfLeadingZeros(v)) / 10;
+		final var x = (double) v / (1L << (z * 10));
 		if(x % 1 == 0) {
-			final long y = (long) x;
+			final var y = (long) x;
 			return String.format(
 				Locale.ROOT,
 				y < 10 ? "%d%sb" : y < 100 ? "%d%sb" : "%d%sb",
@@ -115,9 +115,6 @@ public final class SizeInBytes
 		if(min > max) {
 			throw new IllegalArgumentException("Min size is more than max");
 		}
-		if(max < 0) {
-			throw new IllegalArgumentException("Max size is less than 0");
-		}
 		this.min = min;
 		this.range = max - min;
 		this.bias = bias;
@@ -163,18 +160,20 @@ public final class SizeInBytes
 			return min;
 		} else {
 			long sum = 0;
-			for(int i = 0; i < APPROXIMATION_COUNT; i ++) {
+			for(var i = 0; i < APPROXIMATION_COUNT; i ++) {
 				sum += get();
 			}
 			return sum / APPROXIMATION_COUNT;
 		}
 	}
 
-	private static final ThreadLocal<StringBuilder> STRING_BULDER = ThreadLocal.withInitial(() -> new StringBuilder());
+	private static final ThreadLocal<StringBuilder> STRING_BULDER = ThreadLocal.withInitial(
+		StringBuilder::new
+	);
 
 	@Override
 	public final String toString() {
-		final StringBuilder sb = STRING_BULDER.get();
+		final var sb = STRING_BULDER.get();
 		sb.setLength(0);
 		sb.append(formatFixedSize(min));
 		if(range > 0) {
@@ -193,7 +192,7 @@ public final class SizeInBytes
 	@Override
 	public final boolean equals(final Object o) {
 		if(o instanceof SizeInBytes) {
-			final SizeInBytes s = (SizeInBytes) o;
+			final var s = (SizeInBytes) o;
 			return min == s.min && range == s.range && bias == s.bias;
 		} else {
 			return false;

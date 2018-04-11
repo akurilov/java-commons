@@ -1,5 +1,9 @@
 package com.github.akurilov.commons.io.file;
 
+import com.github.akurilov.commons.io.file.FileInput;
+import com.github.akurilov.commons.io.file.FileOutput;
+import com.github.akurilov.commons.io.file.TextFileInput;
+import com.github.akurilov.commons.io.file.TextFileOutput;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

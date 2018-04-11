@@ -21,7 +21,7 @@ extends ListInput<T> {
 
 	private int loadMore()
 	throws IOException {
-		final T lastItem = size > 0 ? items.get(size - 1) : null;
+		final var lastItem = size > 0 ? items.get(size - 1) : null;
 		i = 0;
 		items.clear();
 		return size = loadMoreItems(lastItem);
@@ -49,14 +49,14 @@ extends ListInput<T> {
 	@Override
 	public final int get(final List<T> buffer, final int maxCount)
 	throws IOException {
-		int n = size - i;
+		var n = size - i;
 		if(n == 0) {
 			if(loadMore() <= 0) {
 				throw new EOFException();
 			}
 		}
 		n = Math.min(size - i, maxCount);
-		for(int j = i; j < i + n; j ++) {
+		for(var j = i; j < i + n; j ++) {
 			buffer.add(items.get(j));
 		}
 		i += n;

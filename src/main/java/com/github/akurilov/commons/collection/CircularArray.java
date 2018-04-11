@@ -38,7 +38,7 @@ implements Iterable<T> {
 	}
 
 	public int searchItem(final T item) {
-		int index = binarySearch(array, pointer, size, item, arrayComparator);
+		var index = binarySearch(array, pointer, size, item, arrayComparator);
 		if(index < 0) {
 			index = binarySearch(array, 0, pointer, item, arrayComparator);
 		}
@@ -46,10 +46,10 @@ implements Iterable<T> {
 	}
 
 	public List<T> getLastItems(final T item) {
-		final List<T> lastItems = new ArrayList<>(size);
-		final int searchedItemIndex = searchItem(item);
-		final Iterator<T> iterator = new LastItemsIterator(searchedItemIndex);
-		while (iterator.hasNext()) {
+		final var lastItems = new ArrayList<T>(size);
+		final var searchedItemIndex = searchItem(item);
+		final var iterator = new LastItemsIterator(searchedItemIndex);
+		while(iterator.hasNext()) {
 			lastItems.add(iterator.next());
 		}
 		return lastItems;
@@ -103,7 +103,7 @@ implements Iterable<T> {
 		}
 
 		public LastItemsIterator(final int startIndex) {
-			final int arrayPrePointerIndex = CircularArray.this.pointer - 1;
+			final var arrayPrePointerIndex = CircularArray.this.pointer - 1;
 			if(size < length) {
 				if(startIndex < 0) {
 					this.pointer = -1;
@@ -149,19 +149,14 @@ implements Iterable<T> {
 	}
 	
 	private static final ThreadLocal<StringBuilder>
-		STRING_BULDER = new ThreadLocal<StringBuilder>() {
-			@Override
-			protected final StringBuilder initialValue() {
-				return new StringBuilder();
-			}
-		};
+		STRING_BULDER = ThreadLocal.withInitial(StringBuilder::new);
 	@Override
 	public String toString() {
-		final StringBuilder valuesBuilder = STRING_BULDER.get();
+		final var valuesBuilder = STRING_BULDER.get();
 		valuesBuilder.setLength(0);
 		valuesBuilder.append('[');
 		if(size > 0) {
-			for(int i = 0; i < size; i ++) {
+			for(var i = 0; i < size; i ++) {
 				valuesBuilder.append(' ').append(this.array[i].toString()).append(", ");
 			}
 			valuesBuilder.delete(valuesBuilder.length() - 2, valuesBuilder.length() - 1);

@@ -14,10 +14,7 @@ allprojects {
 	version = "2.0.0"
 }
 
-tasks.withType(JavaCompile) {
-	sourceCompatibility = JavaVersion.VERSION_1_10
-	targetCompatibility = JavaVersion.VERSION_1_10
-}
+ext.moduleName = "${group}.commons"
 
 repositories {
 	mavenCentral()
@@ -29,22 +26,45 @@ dependencies {
 }
 
 compileJava {
+	sourceCompatibility = JavaVersion.VERSION_1_10
+	targetCompatibility = JavaVersion.VERSION_1_10
 	inputs.property("moduleName", moduleName)
 	doFirst {
 		options.compilerArgs = [
-			'--module-path', classpath.asPath,
+			"--module-path", classpath.asPath,
+		]
+		classpath = files()
+	}
+}
+
+compileTestJava {
+	sourceCompatibility = JavaVersion.VERSION_1_10
+	targetCompatibility = JavaVersion.VERSION_1_10
+	inputs.property("moduleName", moduleName)
+	doFirst {
+		options.compilerArgs = [
+			"--module-path", classpath.asPath,
+			"--add-modules", "ALL-MODULE-PATH",
+			"--add-reads", "$moduleName=junit",
+			"--patch-module", "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
 		]
 		classpath = files()
 	}
 }
 
 jar {
+	inputs.property("moduleName", moduleName)
 	manifest {
 		attributes (
+			"Automatic-Module-Name": moduleName,
 			"Implementation-Version": version,
 			"Implementation-Title": rootProject.name,
 		)
 	}
+}
+
+javadoc {
+	options.addStringOption("-module-path", classpath.asPath)
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -64,6 +84,16 @@ artifacts {
 }
 
 test {
+	inputs.property("moduleName", moduleName)
+	doFirst {
+		jvmArgs = [
+			"--module-path", classpath.asPath,
+			"--add-modules", "ALL-MODULE-PATH",
+			"--add-reads", "$moduleName=junit",
+			"--patch-module", "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
+		]
+		classpath = files()
+	}
 	jvmArgs "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
 	jvmArgs "-XX:MaxDirectMemorySize=1g"
 	jvmArgs "-XX:+HeapDumpOnOutOfMemoryError"

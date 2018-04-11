@@ -21,8 +21,7 @@ extends OutputStream {
 
 	@Override
 	public void write(final byte buff[], final int off, final int len)
-	throws IOException
-	{
+	throws IOException {
 		byteCount.add(len);
 	}
 
