@@ -21,12 +21,12 @@ public interface NetUtil {
 	static InetAddress getHostAddr()
 	throws SocketException {
 		InetAddress addr = null;
-		final var netIfaces = NetworkInterface.getNetworkInterfaces();
+		final Enumeration<NetworkInterface> netIfaces = NetworkInterface.getNetworkInterfaces();
 		NetworkInterface nextNetIface;
 		while(netIfaces.hasMoreElements()) {
 			nextNetIface = netIfaces.nextElement();
 			if(!nextNetIface.isLoopback() && nextNetIface.isUp()) {
-				final var addrs = nextNetIface.getInetAddresses();
+				final Enumeration<InetAddress> addrs = nextNetIface.getInetAddresses();
 				while(addrs.hasMoreElements()) {
 					addr = addrs.nextElement();
 					if(Inet4Address.class.isInstance(addr)) {

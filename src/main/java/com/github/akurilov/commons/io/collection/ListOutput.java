@@ -37,7 +37,7 @@ implements Output<T> {
 	@Override
 	public int put(final List<T> buffer, final int from, final int to)
 	throws IOException {
-		for(var i = from; i < to; i ++) {
+		for(int i = from; i < to; i ++) {
 			items.add(buffer.get(i));
 		}
 		return to - from;

@@ -29,7 +29,7 @@ implements Input<String> {
 	@Override
 	public String get()
 	throws EOFException, IOException {
-		final var nextLine = reader.readLine();
+		final String nextLine = reader.readLine();
 		if(nextLine == null) {
 			throw new EOFException();
 		}

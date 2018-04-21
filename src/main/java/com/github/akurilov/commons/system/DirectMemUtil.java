@@ -34,8 +34,8 @@ public interface DirectMemUtil {
 			throw new IllegalArgumentException("Requested negative buffer size: " + size);
 		}
 
-		final var threadLocalReusableBuffers = REUSABLE_BUFFS.get();
-		var currBuffSize = Long.highestOneBit(size);
+		final MappedByteBuffer[] threadLocalReusableBuffers = REUSABLE_BUFFS.get();
+		long currBuffSize = Long.highestOneBit(size);
 		if(currBuffSize > REUSABLE_BUFF_SIZE_MAX) {
 			currBuffSize = REUSABLE_BUFF_SIZE_MAX;
 		} else if(currBuffSize < REUSABLE_BUFF_SIZE_MAX) {
@@ -45,8 +45,8 @@ public interface DirectMemUtil {
 				currBuffSize <<= 1;
 			}
 		}
-		final var i = Long.numberOfTrailingZeros(currBuffSize);
-		var buff = threadLocalReusableBuffers[i];
+		final int i = Long.numberOfTrailingZeros(currBuffSize);
+		MappedByteBuffer buff = threadLocalReusableBuffers[i];
 
 		if(buff == null) {
 			buff = (MappedByteBuffer) ByteBuffer.allocateDirect((int) currBuffSize);

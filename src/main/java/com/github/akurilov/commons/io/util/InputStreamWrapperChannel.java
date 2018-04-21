@@ -17,7 +17,7 @@ implements BufferedReadableByteChannel {
 	@Override
 	public final int read(final ByteBuffer dst)
 	throws IOException {
-		final var n = in.read(bb, 0, Math.min(bb.length, dst.remaining()));
+		final int n = in.read(bb, 0, Math.min(bb.length, dst.remaining()));
 		dst.put(bb, 0, n);
 		return n;
 	}
@@ -25,7 +25,7 @@ implements BufferedReadableByteChannel {
 	private final static ThreadLocal<InputStreamWrapperChannel[]>
 		REUSABLE_INPUT_CHANNELS = ThreadLocal.withInitial(
 			() -> {
-				final var count = (int) (
+				final int count = (int) (
 					Math.log(REUSABLE_BUFF_SIZE_MAX / REUSABLE_BUFF_SIZE_MIN) / Math.log(2) + 1
 				);
 				return new InputStreamWrapperChannel[count];
@@ -48,7 +48,8 @@ implements BufferedReadableByteChannel {
 			throw new IllegalArgumentException("Requested negative size: " + remainingSize);
 		}
 
-		final var threadLocalReusableChannels = REUSABLE_INPUT_CHANNELS.get();
+		final InputStreamWrapperChannel[]
+			threadLocalReusableChannels = REUSABLE_INPUT_CHANNELS.get();
 		long currBuffSize = Long.highestOneBit(remainingSize);
 		if(currBuffSize > REUSABLE_BUFF_SIZE_MAX) {
 			currBuffSize = REUSABLE_BUFF_SIZE_MAX;
@@ -59,8 +60,8 @@ implements BufferedReadableByteChannel {
 				currBuffSize <<= 1;
 			}
 		}
-		final var i = Long.numberOfTrailingZeros(currBuffSize);
-		var chan = threadLocalReusableChannels[i];
+		final int i = Long.numberOfTrailingZeros(currBuffSize);
+		InputStreamWrapperChannel chan = threadLocalReusableChannels[i];
 
 		if(chan == null) {
 			chan = new InputStreamWrapperChannel((int) currBuffSize);

@@ -43,8 +43,8 @@ implements Output<T> {
 	@Override
 	public int put(final List<T> buffer, final int from, final int to)
 	throws IOException {
-		final var n = Math.min(items.length - i, to - from);
-		for(var j = 0; j < n; j ++) {
+		final int n = Math.min(items.length - i, to - from);
+		for(int j = 0; j < n; j ++) {
 			items[i + j] = buffer.get(from + j);
 		}
 		return n;

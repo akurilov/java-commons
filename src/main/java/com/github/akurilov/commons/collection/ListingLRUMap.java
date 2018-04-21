@@ -24,7 +24,7 @@ extends LRUMap<K, V> implements Listable<V> {
 
 	@Override
 	public V put(final K key, final V value) {
-		final var oldValue = super.put(key, value);
+		final V oldValue = super.put(key, value);
 		if(null == oldValue) {
 			size.incrementAndGet();
 		}
@@ -33,7 +33,7 @@ extends LRUMap<K, V> implements Listable<V> {
 
 	@Override
 	public V remove(final Object key) {
-		final var value = super.remove(key);
+		final V value = super.remove(key);
 		if(value != null) {
 			size.decrementAndGet();
 		}
@@ -45,8 +45,8 @@ extends LRUMap<K, V> implements Listable<V> {
 		if(isEmpty()) {
 			return null;
 		}
-		var nextEntry = getEntry(afterObjectId);
-		for(var i = 0; i < limit; i++) {
+		LinkEntry<K, V> nextEntry = getEntry(afterObjectId);
+		for(int i = 0; i < limit; i++) {
 			if(nextEntry == null) {
 				nextEntry = getEntry(firstKey());
 			} else {

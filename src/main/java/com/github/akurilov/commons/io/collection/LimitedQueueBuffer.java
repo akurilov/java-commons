@@ -37,7 +37,7 @@ implements IoBuffer<T> {
 	@Override
 	public int put(final List<T> buffer, final int from, final int to)
 	throws IOException {
-		var i = from;
+		int i = from;
 		while(i < to && queue.offer(buffer.get(i))) {
 			i ++;
 		}
@@ -93,7 +93,7 @@ implements IoBuffer<T> {
 	throws IOException {
 		try {
 			T item;
-			var i = 0;
+			long i = 0;
 			for(; i < itemsCount; i++) {
 				item = queue.take();
 				if(item.equals(lastItem)) {
