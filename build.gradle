@@ -11,7 +11,7 @@ allprojects {
 	apply plugin: "maven"
 	apply plugin: "signing"
 	group = "com.github.akurilov"
-	version = "2.0.2"
+	version = "2.0.3"
 }
 
 ext {
@@ -89,7 +89,7 @@ configurations {
 
 dependencies {
 	compile("org.apache.commons:commons-collections4:4.1")
-	compile("it.unimi.dsi:fastutil:8.1.1") {
+	partial("it.unimi.dsi:fastutil:8.1.1") {
 		transitive = false
 	}
 	testCompile("junit:junit:4.12")
@@ -114,7 +114,7 @@ jar {
 	}
 	provided3rdPartyClasses.each {
 		final clsName = it
-		from(configurations.compile.collect { zipTree(it) }) {
+		from(configurations.partial.collect { zipTree(it) }) {
 			include "**" + clsName
 		}
 	}
