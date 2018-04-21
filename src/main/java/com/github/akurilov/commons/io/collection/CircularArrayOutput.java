@@ -36,7 +36,7 @@ extends ArrayOutput<T> {
 	public int put(final List<T> buffer, final int from, final int to)
 	throws IOException {
 		//
-		var n = to - from;
+		int n = to - from;
 		if(buffer.size() > n) {
 			return put(buffer.subList(from, to), 0, n);
 		}
@@ -44,19 +44,19 @@ extends ArrayOutput<T> {
 		n = buffer.size();
 		if(n < items.length) {
 			// buffer may be placed entirely into the capacitor
-			final var limit = items.length - i; // how many free space is in the capacitor;
+			final int limit = items.length - i; // how many free space is in the capacitor;
 			if(n > limit) {
 				// should remove some items from the beginning of the capacitor in order to place
 				// the buffer entirely
 				i = n - limit;
 			}
-			for(var j = from; j < to; j ++) {
+			for(int j = from; j < to; j ++) {
 				items[i ++] = buffer.get(j);
 			}
 		} else {
 			// only a tail part of the buffer may be placed into the capacitor
 			i = 0; // discard all the items in the capacitor
-			for(var j = n - items.length; j < n; j ++) {
+			for(int j = n - items.length; j < n; j ++) {
 				items[i ++] = buffer.get(j);
 			}
 		}
