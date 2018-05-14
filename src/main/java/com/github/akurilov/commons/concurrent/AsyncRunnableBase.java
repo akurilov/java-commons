@@ -6,16 +6,16 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.github.akurilov.concurrent.AsyncRunnable.State.FINISHED;
-import static com.github.akurilov.concurrent.AsyncRunnable.State.INITIAL;
-import static com.github.akurilov.concurrent.AsyncRunnable.State.SHUTDOWN;
-import static com.github.akurilov.concurrent.AsyncRunnable.State.STARTED;
-import static com.github.akurilov.concurrent.AsyncRunnable.State.STOPPED;
+import static com.github.akurilov.commons.concurrent.AsyncRunnable.State.FINISHED;
+import static com.github.akurilov.commons.concurrent.AsyncRunnable.State.INITIAL;
+import static com.github.akurilov.commons.concurrent.AsyncRunnable.State.SHUTDOWN;
+import static com.github.akurilov.commons.concurrent.AsyncRunnable.State.STARTED;
+import static com.github.akurilov.commons.concurrent.AsyncRunnable.State.STOPPED;
 
 public abstract class AsyncRunnableBase
 implements AsyncRunnable {
 
-	private volatile State state = State.INITIAL;
+	private volatile State state = INITIAL;
 
 	private final Lock stateLock = new ReentrantLock();
 	private final Condition stateChanged = stateLock.newCondition();
