@@ -3,7 +3,7 @@
 ## Gradle
 
 ```groovy
-compile group: 'com.github.akurilov', name: 'java-commons', version: '2.0.4'
+compile group: 'com.github.akurilov', name: 'java-commons', version: '2.0.5'
 ```
 
 # Library Content
@@ -19,6 +19,14 @@ The class ```OptLockArrayBuffer``` is designed to support the optional locking.
 
 Publishing the ```ArrayList.removeRange(from, to)``` method allows to recycle the buffer after it
 partially consumed w/o redundant instantiation. The interface ```OptLockBuffer``` is designed to support the range removing method.
+
+### Trees
+
+* Deep copy
+
+* Deep merge
+
+* Reduce a forest into a tree
 
 ### Range
 

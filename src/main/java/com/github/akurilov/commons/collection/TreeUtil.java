@@ -1,9 +1,9 @@
 package com.github.akurilov.commons.collection;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public interface TreeUtil {
 
@@ -12,21 +12,34 @@ public interface TreeUtil {
 	 @param srcTree the source tree
 	 @return the tree copy
 	 */
-	static Map<String, Object> deepCopyTree(final Map<String, Object> srcTree) {
-		return srcTree
-			.entrySet()
-			.stream()
-			.collect(
-				Collectors.toMap(
-					Map.Entry::getKey,
-					entry -> {
-						final Object value = entry.getValue();
-						return value instanceof Map ?
-							deepCopyTree((Map<String, Object>) value) :
-							value;
+	@SuppressWarnings("unchecked")
+	static Map<String, Object> copyTree(final Map<String, Object> srcTree) {
+		final Map<String, Object> dstTree = new HashMap<>(srcTree.size());
+		srcTree.forEach(
+			(k, v) -> dstTree.put(k, v instanceof Map ? copyTree((Map<String, Object>) v) : v)
+		);
+		return dstTree;
+	}
+
+	@SuppressWarnings("unchecked")
+	static Map<String, Object> addBranches(
+		final Map<String, Object> dst, final Map<String, Object> src
+	) {
+		src.forEach(
+			(k, v) -> {
+				if(v instanceof Map) {
+					final Object dstNode = dst.get(k);
+					if(dstNode instanceof Map) {
+						addBranches((Map<String, Object>) dstNode, (Map<String, Object>) v);
+					} else {
+						dst.put(k, v);
 					}
-				)
-			);
+				} else {
+					dst.put(k, v);
+				}
+			}
+		);
+		return dst;
 	}
 
 	/**
@@ -38,28 +51,7 @@ public interface TreeUtil {
 	static Map<String, Object> reduceForest(final List<Map<String, Object>> forest) {
 		return forest
 			.stream()
-			.reduce(TreeUtil::deepAddEntries)
+			.reduce(TreeUtil::addBranches)
 			.orElseGet(Collections::emptyMap);
-	}
-
-	@SuppressWarnings("unchecked")
-	static Map<String, Object> deepAddEntries(
-		final Map<String, Object> dst, final Map<String, Object> src
-	) {
-		src.forEach(
-			(k, v) -> {
-				if(v instanceof Map) {
-					final Object dstNode = dst.get(k);
-					if(dstNode instanceof Map) {
-						deepAddEntries((Map<String, Object>) dstNode, (Map<String, Object>) v);
-					} else {
-						dst.put(k, v);
-					}
-				} else {
-					dst.put(k, v);
-				}
-			}
-		);
-		return dst;
 	}
 }
