@@ -1,8 +1,7 @@
-package com.github.akurilov.commons.test;
+package com.github.akurilov.commons.io.collection;
 
 import com.github.akurilov.commons.io.Input;
 
-import com.github.akurilov.commons.io.collection.BufferingInputBase;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
