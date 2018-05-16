@@ -39,6 +39,16 @@ public class TypeUtilTest {
 	@Test
 	public void typeConvertTest()
 	throws Exception {
+		try {
+			typeConvert((byte) 0x10, boolean.class);
+			fail();
+		} catch(final ClassCastException ok) {
+		}
+		try {
+			typeConvert(Long.MAX_VALUE, int.class);
+			fail();
+		} catch(final ClassCastException ok) {
+		}
 		typeConvert(42, Double.class);
 		typeConvert(42L, double.class);
 		typeConvert(42.0, float.class);
