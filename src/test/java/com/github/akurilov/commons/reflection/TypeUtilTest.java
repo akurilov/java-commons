@@ -1,10 +1,13 @@
 package com.github.akurilov.commons.reflection;
 
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static com.github.akurilov.commons.reflection.TypeUtil.typeConvert;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import java.lang.reflect.Method;
 
 import static com.github.akurilov.commons.reflection.TypeUtil.typeEquals;
 
@@ -13,76 +16,32 @@ import static com.github.akurilov.commons.reflection.TypeUtil.typeEquals;
  */
 public class TypeUtilTest {
 
-	public boolean mBooleanType() {
-		return true;
-	}
-
-	public Boolean mBooleanClass() {
-		return true;
-	}
-
-	public int mIntType() {
-		return 0;
-	}
-
-	public Integer mIntClass() {
-		return 0;
-	}
-
-	public long mLongType() {
-		return 0;
-	}
-
-	public Long mLongClass() {
-		return 0L;
-	}
-
-	public double mDoubleType() {
-		return 0;
-	}
-
-	public Double mDoubleClass() {
-		return 0.0;
-	}
-
-	public Object mObject() {
-		return TypeUtilTest.class.getName();
-	}
-
-	public String mString() {
-		return TypeUtilTest.class.getName();
-	}
-
 	@Test
 	public void typeEqualsTest()
 	throws Exception {
 
-		final Method mBooleanType = TypeUtilTest.class.getMethod("mBooleanType");
-		final Method mBooleanClass = TypeUtilTest.class.getMethod("mBooleanClass");
-		assertTrue(typeEquals(mBooleanType.getReturnType(), mBooleanClass.getReturnType()));
-		assertTrue(typeEquals(mBooleanClass.getReturnType(), mBooleanType.getReturnType()));
+		assertTrue(typeEquals(boolean.class, Boolean.class));
+		assertTrue(typeEquals(Boolean.class, boolean.class));
+		assertTrue(typeEquals(int.class, Integer.class));
+		assertTrue(typeEquals(Integer.class, int.class));
+		assertTrue(typeEquals(long.class, Long.class));
+		assertTrue(typeEquals(Long.class, long.class));
+		assertTrue(typeEquals(double.class, Double.class));
+		assertTrue(typeEquals(Double.class, double.class));
 
-		final Method mIntType = TypeUtilTest.class.getMethod("mIntType");
-		final Method mIntClass = TypeUtilTest.class.getMethod("mIntClass");
-		assertTrue(typeEquals(mIntType.getReturnType(), mIntClass.getReturnType()));
-		assertTrue(typeEquals(mIntClass.getReturnType(), mIntType.getReturnType()));
+		assertFalse(typeEquals(Object.class, String.class));
+		assertFalse(typeEquals(String.class, Object.class));
+		assertFalse(typeEquals(Integer.class, Long.class));
+		assertFalse(typeEquals(long.class, int.class));
+	}
 
-		final Method mLongType = TypeUtilTest.class.getMethod("mLongType");
-		final Method mLongClass = TypeUtilTest.class.getMethod("mLongClass");
-		assertTrue(typeEquals(mLongType.getReturnType(), mLongClass.getReturnType()));
-		assertTrue(typeEquals(mLongClass.getReturnType(), mLongType.getReturnType()));
-
-		final Method mDoubleType = TypeUtilTest.class.getMethod("mDoubleType");
-		final Method mDoubleClass = TypeUtilTest.class.getMethod("mDoubleClass");
-		assertTrue(typeEquals(mDoubleType.getReturnType(), mDoubleClass.getReturnType()));
-		assertTrue(typeEquals(mDoubleClass.getReturnType(), mDoubleType.getReturnType()));
-
-		final Method mObject = TypeUtilTest.class.getMethod("mObject");
-		final Method mString = TypeUtilTest.class.getMethod("mString");
-		assertFalse(typeEquals(mObject.getReturnType(), mString.getReturnType()));
-		assertFalse(typeEquals(mString.getReturnType(), mObject.getReturnType()));
-
-		assertFalse(typeEquals(mIntClass.getReturnType(), mLongClass.getReturnType()));
-		assertFalse(typeEquals(mLongType.getReturnType(), mIntType.getReturnType()));
+	@Test
+	public void typeConvertTest()
+	throws Exception {
+		typeConvert(42, Double.class);
+		typeConvert(42L, double.class);
+		typeConvert(42.0, float.class);
+		typeConvert(Double.valueOf(42.0), float.class);
+		typeConvert(Arrays.asList(1, 2, 3), List.class);
 	}
 }
