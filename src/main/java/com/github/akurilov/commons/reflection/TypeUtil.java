@@ -181,6 +181,29 @@ public interface TypeUtil {
 				return (T) (Object) ((Float) val).doubleValue();
 			}
 		}
+		if(val instanceof Double) {
+			if(cls.equals(boolean.class)) {
+				throw new ClassCastException("Couldn't cast double value to boolean");
+			}
+			if(cls.equals(byte.class)) {
+				throw new ClassCastException("Couldn't cast double value to byte");
+			}
+			if(cls.equals(short.class)) {
+				throw new ClassCastException("Couldn't cast double value to short");
+			}
+			if(cls.equals(char.class)) {
+				throw new ClassCastException("Couldn't cast double value to char");
+			}
+			if(cls.equals(int.class)) {
+				throw new ClassCastException("Couldn't cast double value to int");
+			}
+			if(cls.equals(long.class)) {
+				throw new ClassCastException("Couldn't cast double value to long");
+			}
+			if(cls.equals(float.class)) {
+				throw new ClassCastException("Couldn't cast double value to float");
+			}
+		}
 		return (T) val;
 	}
 }
