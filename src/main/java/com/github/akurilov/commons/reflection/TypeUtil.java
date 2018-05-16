@@ -1,7 +1,5 @@
 package com.github.akurilov.commons.reflection;
 
-import java.lang.reflect.Field;
-
 public interface TypeUtil {
 
 	/**
