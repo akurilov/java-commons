@@ -51,8 +51,12 @@ public class TypeUtilTest {
 		}
 		typeConvert(42, Double.class);
 		typeConvert(42L, double.class);
-		typeConvert(42.0, float.class);
-		typeConvert(Double.valueOf(42.0), float.class);
+		typeConvert((float) 42.0, float.class);
+		try {
+			typeConvert(42.0, float.class);
+			fail();
+		} catch(final ClassCastException ok) {
+		}
 		typeConvert(Arrays.asList(1, 2, 3), List.class);
 		typeConvert(null, Integer.class);
 		try {
