@@ -3,7 +3,7 @@
 ## Gradle
 
 ```groovy
-compile group: 'com.github.akurilov', name: 'java-commons', version: '2.0.8'
+compile group: 'com.github.akurilov', name: 'java-commons', version: '2.0.9'
 ```
 
 # Library Content

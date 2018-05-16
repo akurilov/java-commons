@@ -40,170 +40,182 @@ public interface TypeUtil {
 	@SuppressWarnings({ "unchecked", "UnnecessaryUnboxing" })
 	static <T> T typeConvert(final Object val, final Class<T> cls)
 	throws ClassCastException {
-		if(val == null && cls.isPrimitive()) {
-			throw new ClassCastException("Couldn't cast null value to a primitive type");
-		}
-		if(val instanceof Byte) {
-			if(cls.equals(boolean.class)) {
-				throw new ClassCastException("Couldn't cast byte value to boolean");
+
+		if(val == null) {
+			if(cls.isPrimitive()) {
+				throw new ClassCastException("Cannot cast null to a primitive type");
+			} else {
+				return (T) val;
 			}
-			if(cls.equals(char.class)) {
+		}
+
+		if(val instanceof Byte) {
+			if(cls.equals(boolean.class) || cls.equals(Boolean.class)) {
+				throw new ClassCastException("Cannot cast byte to boolean");
+			}
+			if(cls.equals(char.class) || cls.equals(Character.class)) {
 				return (T) (Object) (char) (((Byte) val).byteValue() & 0xFF);
 			}
-			if(cls.equals(short.class)) {
+			if(cls.equals(short.class) || cls.equals(Short.class)) {
 				return (T) (Object) ((Byte) val).shortValue();
 			}
-			if(cls.equals(int.class)) {
+			if(cls.equals(int.class) || cls.equals(Integer.class)) {
 				return (T) (Object) ((Byte) val).intValue();
 			}
-			if(cls.equals(long.class)) {
+			if(cls.equals(long.class) || cls.equals(Long.class)) {
 				return (T) (Object) ((Byte) val).longValue();
 			}
-			if(cls.equals(float.class)) {
+			if(cls.equals(float.class) || cls.equals(Float.class)) {
 				return (T) (Object) ((Byte) val).floatValue();
 			}
-			if(cls.equals(double.class)) {
+			if(cls.equals(double.class) || cls.equals(Double.class)) {
 				return (T) (Object) ((Byte) val).doubleValue();
 			}
 		}
 		if(val instanceof Short) {
-			if(cls.equals(boolean.class)) {
-				throw new ClassCastException("Couldn't cast short value to boolean");
+			if(cls.equals(boolean.class) || cls.equals(Boolean.class)) {
+				throw new ClassCastException("Cannot cast short to boolean");
 			}
-			if(cls.equals(byte.class)) {
-				throw new ClassCastException("Couldn't cast short value to byte");
+			if(cls.equals(byte.class) || cls.equals(Byte.class)) {
+				throw new ClassCastException("Cannot cast short to byte");
 			}
-			if(cls.equals(char.class)) {
+			if(cls.equals(char.class) || cls.equals(Character.class)) {
 				return (T) (Object) (char) (((Short) val).shortValue() & 0xFFFF);
 			}
-			if(cls.equals(int.class)) {
+			if(cls.equals(int.class) || cls.equals(Integer.class)) {
 				return (T) (Object) ((Short) val).intValue();
 			}
-			if(cls.equals(long.class)) {
+			if(cls.equals(long.class) || cls.equals(Long.class)) {
 				return (T) (Object) ((Short) val).longValue();
 			}
-			if(cls.equals(float.class)) {
+			if(cls.equals(float.class) || cls.equals(Float.class)) {
 				return (T) (Object) ((Short) val).floatValue();
 			}
-			if(cls.equals(double.class)) {
+			if(cls.equals(double.class) || cls.equals(Double.class)) {
 				return (T) (Object) ((Short) val).doubleValue();
 			}
 		}
 		if(val instanceof Character) {
-			if(cls.equals(boolean.class)) {
-				throw new ClassCastException("Couldn't cast char value to boolean");
+			if(cls.equals(boolean.class) || cls.equals(Boolean.class)) {
+				throw new ClassCastException("Cannot cast char to boolean");
 			}
-			if(cls.equals(byte.class)) {
-				throw new ClassCastException("Couldn't cast char value to byte");
+			if(cls.equals(byte.class) || cls.equals(Byte.class)) {
+				throw new ClassCastException("Cannot cast char to byte");
 			}
-			if(cls.equals(short.class)) {
-				throw new ClassCastException("Couldn't cast char value to short");
+			if(cls.equals(short.class) || cls.equals(Short.class)) {
+				throw new ClassCastException("Cannot cast char to short");
 			}
-			if(cls.equals(int.class)) {
+			if(cls.equals(int.class) || cls.equals(Integer.class)) {
 				return (T) (Object) (int) ((char) val);
 			}
-			if(cls.equals(long.class)) {
+			if(cls.equals(long.class) || cls.equals(Long.class)) {
 				return (T) (Object) (long) ((char) val);
 			}
-			if(cls.equals(float.class)) {
+			if(cls.equals(float.class) || cls.equals(Float.class)) {
 				return (T) (Object) (float) ((char) val);
 			}
-			if(cls.equals(double.class)) {
+			if(cls.equals(double.class) || cls.equals(Double.class)) {
 				return (T) (Object) (double) ((char) val);
 			}
 		}
 		if(val instanceof Integer) {
-			if(cls.equals(boolean.class)) {
-				throw new ClassCastException("Couldn't cast int value to boolean");
+			if(cls.equals(boolean.class) || cls.equals(Boolean.class)) {
+				throw new ClassCastException("Cannot cast int to boolean");
 			}
-			if(cls.equals(byte.class)) {
-				throw new ClassCastException("Couldn't cast int value to byte");
+			if(cls.equals(byte.class) || cls.equals(Byte.class)) {
+				throw new ClassCastException("Cannot cast int to byte");
 			}
-			if(cls.equals(short.class)) {
-				throw new ClassCastException("Couldn't cast int value to short");
+			if(cls.equals(short.class) || cls.equals(Short.class)) {
+				throw new ClassCastException("Cannot cast int to short");
 			}
-			if(cls.equals(char.class)) {
-				throw new ClassCastException("Couldn't cast int value to char");
+			if(cls.equals(char.class) || cls.equals(Character.class)) {
+				throw new ClassCastException("Cannot cast int to char");
 			}
-			if(cls.equals(long.class)) {
+			if(cls.equals(long.class) || cls.equals(Long.class)) {
 				return (T) (Object) ((Integer) val).longValue();
 			}
-			if(cls.equals(float.class)) {
+			if(cls.equals(float.class) || cls.equals(Float.class)) {
 				return (T) (Object) ((Integer) val).floatValue();
 			}
-			if(cls.equals(double.class)) {
+			if(cls.equals(double.class) || cls.equals(Double.class)) {
 				return (T) (Object) ((Integer) val).doubleValue();
 			}
 		}
 		if(val instanceof Long) {
-			if(cls.equals(boolean.class)) {
-				throw new ClassCastException("Couldn't cast long value to boolean");
+			if(cls.equals(boolean.class) || cls.equals(Boolean.class)) {
+				throw new ClassCastException("Cannot cast long to boolean");
 			}
-			if(cls.equals(byte.class)) {
-				throw new ClassCastException("Couldn't cast long value to byte");
+			if(cls.equals(byte.class) || cls.equals(Byte.class)) {
+				throw new ClassCastException("Cannot cast long to byte");
 			}
-			if(cls.equals(short.class)) {
-				throw new ClassCastException("Couldn't cast long value to short");
+			if(cls.equals(short.class) || cls.equals(Short.class)) {
+				throw new ClassCastException("Cannot cast long to short");
 			}
-			if(cls.equals(char.class)) {
-				throw new ClassCastException("Couldn't cast long value to char");
+			if(cls.equals(char.class) || cls.equals(Character.class)) {
+				throw new ClassCastException("Cannot cast long to char");
 			}
-			if(cls.equals(int.class)) {
-				throw new ClassCastException("Couldn't cast long value to int");
+			if(cls.equals(int.class) || cls.equals(Integer.class)) {
+				throw new ClassCastException("Cannot cast long to int");
 			}
-			if(cls.equals(float.class)) {
+			if(cls.equals(float.class) || cls.equals(Float.class)) {
 				return (T) (Object) ((Long) val).floatValue();
 			}
-			if(cls.equals(double.class)) {
+			if(cls.equals(double.class) || cls.equals(Double.class)) {
 				return (T) (Object) ((Long) val).doubleValue();
 			}
 		}
 		if(val instanceof Float) {
-			if(cls.equals(boolean.class)) {
-				throw new ClassCastException("Couldn't cast float value to boolean");
+			if(cls.equals(boolean.class) || cls.equals(Boolean.class)) {
+				throw new ClassCastException("Cannot cast float to boolean");
 			}
-			if(cls.equals(byte.class)) {
-				throw new ClassCastException("Couldn't cast float value to byte");
+			if(cls.equals(byte.class) || cls.equals(Byte.class)) {
+				throw new ClassCastException("Cannot cast float to byte");
 			}
-			if(cls.equals(short.class)) {
-				throw new ClassCastException("Couldn't cast float value to short");
+			if(cls.equals(short.class) || cls.equals(Short.class)) {
+				throw new ClassCastException("Cannot cast float to short");
 			}
-			if(cls.equals(char.class)) {
-				throw new ClassCastException("Couldn't cast float value to char");
+			if(cls.equals(char.class) || cls.equals(Character.class)) {
+				throw new ClassCastException("Cannot cast float to char");
 			}
-			if(cls.equals(int.class)) {
-				throw new ClassCastException("Couldn't cast float value to int");
+			if(cls.equals(int.class) || cls.equals(Integer.class)) {
+				throw new ClassCastException("Cannot cast float to int");
 			}
-			if(cls.equals(long.class)) {
-				throw new ClassCastException("Couldn't cast float value to long");
+			if(cls.equals(long.class) || cls.equals(Long.class)) {
+				throw new ClassCastException("Cannot cast float to long");
 			}
-			if(cls.equals(double.class)) {
+			if(cls.equals(double.class) || cls.equals(Double.class)) {
 				return (T) (Object) ((Float) val).doubleValue();
 			}
 		}
 		if(val instanceof Double) {
-			if(cls.equals(boolean.class)) {
-				throw new ClassCastException("Couldn't cast double value to boolean");
+			if(cls.equals(boolean.class) || cls.equals(Boolean.class)) {
+				throw new ClassCastException("Cannot cast double to boolean");
 			}
-			if(cls.equals(byte.class)) {
-				throw new ClassCastException("Couldn't cast double value to byte");
+			if(cls.equals(byte.class) || cls.equals(Byte.class)) {
+				throw new ClassCastException("Cannot cast double to byte");
 			}
-			if(cls.equals(short.class)) {
-				throw new ClassCastException("Couldn't cast double value to short");
+			if(cls.equals(short.class) || cls.equals(Short.class)) {
+				throw new ClassCastException("Cannot cast double to short");
 			}
-			if(cls.equals(char.class)) {
-				throw new ClassCastException("Couldn't cast double value to char");
+			if(cls.equals(char.class) || cls.equals(Character.class)) {
+				throw new ClassCastException("Cannot cast double to char");
 			}
-			if(cls.equals(int.class)) {
-				throw new ClassCastException("Couldn't cast double value to int");
+			if(cls.equals(int.class) || cls.equals(Integer.class)) {
+				throw new ClassCastException("Cannot cast double to int");
 			}
-			if(cls.equals(long.class)) {
-				throw new ClassCastException("Couldn't cast double value to long");
+			if(cls.equals(long.class) || cls.equals(Long.class)) {
+				throw new ClassCastException("Cannot cast double to long");
 			}
-			if(cls.equals(float.class)) {
-				throw new ClassCastException("Couldn't cast double value to float");
+			if(cls.equals(float.class) || cls.equals(Float.class)) {
+				throw new ClassCastException("Cannot cast double to float");
 			}
 		}
-		return (T) val;
+
+		final Class valCls = val.getClass();
+		if(cls.isAssignableFrom(valCls) || typeEquals(cls, valCls)) {
+			return (T) val;
+		} else {
+			throw new ClassCastException("Cannot cast " + valCls + " to " + cls);
+		}
 	}
 }

@@ -39,28 +39,38 @@ public class TypeUtilTest {
 	@Test
 	public void typeConvertTest()
 	throws Exception {
+		System.out.println(typeConvert(42, Double.class));
+		System.out.println(typeConvert(42L, double.class));
+		System.out.println(typeConvert((float) 42.0, float.class));
+		System.out.println(typeConvert(Arrays.asList(1, 2, 3), List.class));
+		System.out.println(typeConvert(null, Integer.class));
+	}
+
+	@Test
+	public void typeConvertFailTest()
+	throws Exception {
 		try {
-			typeConvert((byte) 0x10, boolean.class);
+			System.out.println(typeConvert((byte) 0x10, boolean.class));
 			fail();
 		} catch(final ClassCastException ok) {
 		}
 		try {
-			typeConvert(Long.MAX_VALUE, int.class);
+			System.out.println(typeConvert(Long.MAX_VALUE, int.class));
 			fail();
 		} catch(final ClassCastException ok) {
 		}
-		typeConvert(42, Double.class);
-		typeConvert(42L, double.class);
-		typeConvert((float) 42.0, float.class);
 		try {
-			typeConvert(42.0, float.class);
+			System.out.println(typeConvert(42.0, float.class));
 			fail();
 		} catch(final ClassCastException ok) {
 		}
-		typeConvert(Arrays.asList(1, 2, 3), List.class);
-		typeConvert(null, Integer.class);
 		try {
-			typeConvert(null, int.class);
+			System.out.println(typeConvert(null, int.class));
+			fail();
+		} catch(final ClassCastException ok) {
+		}
+		try {
+			typeConvert(Arrays.asList(1, 2, 3), String.class);
 			fail();
 		} catch(final ClassCastException ok) {
 		}
