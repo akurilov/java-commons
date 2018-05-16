@@ -10,6 +10,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import static com.github.akurilov.commons.reflection.TypeUtil.typeEquals;
+import static org.junit.Assert.fail;
 
 /**
  Created by andrey on 13.11.16.
@@ -43,5 +44,11 @@ public class TypeUtilTest {
 		typeConvert(42.0, float.class);
 		typeConvert(Double.valueOf(42.0), float.class);
 		typeConvert(Arrays.asList(1, 2, 3), List.class);
+		typeConvert(null, Integer.class);
+		try {
+			typeConvert(null, int.class);
+			fail();
+		} catch(final ClassCastException ok) {
+		}
 	}
 }

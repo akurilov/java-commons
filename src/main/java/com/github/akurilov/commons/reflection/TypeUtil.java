@@ -42,6 +42,9 @@ public interface TypeUtil {
 	@SuppressWarnings({ "unchecked", "UnnecessaryUnboxing" })
 	static <T> T typeConvert(final Object val, final Class<T> cls)
 	throws ClassCastException {
+		if(val == null && cls.isPrimitive()) {
+			throw new ClassCastException("Couldn't cast null to a primitive type");
+		}
 		if(val instanceof Byte) {
 			if(cls.equals(short.class)) {
 				return (T) (Object) ((Byte) val).shortValue();
