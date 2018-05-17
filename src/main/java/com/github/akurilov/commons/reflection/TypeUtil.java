@@ -45,7 +45,7 @@ public interface TypeUtil {
 			if(cls.isPrimitive()) {
 				throw new ClassCastException("Cannot cast null to a primitive type");
 			} else {
-				return (T) val;
+				return null;
 			}
 		}
 
@@ -71,6 +71,9 @@ public interface TypeUtil {
 			if(cls.equals(double.class) || cls.equals(Double.class)) {
 				return (T) (Object) ((Byte) val).doubleValue();
 			}
+			if(cls.equals(String.class)) {
+				return (T) val;
+			}
 		}
 		if(val instanceof Short) {
 			if(cls.equals(boolean.class) || cls.equals(Boolean.class)) {
@@ -93,6 +96,9 @@ public interface TypeUtil {
 			}
 			if(cls.equals(double.class) || cls.equals(Double.class)) {
 				return (T) (Object) ((Short) val).doubleValue();
+			}
+			if(cls.equals(String.class)) {
+				return (T) val;
 			}
 		}
 		if(val instanceof Character) {
@@ -117,6 +123,9 @@ public interface TypeUtil {
 			if(cls.equals(double.class) || cls.equals(Double.class)) {
 				return (T) (Object) (double) ((char) val);
 			}
+			if(cls.equals(String.class)) {
+				return (T) val;
+			}
 		}
 		if(val instanceof Integer) {
 			if(cls.equals(boolean.class) || cls.equals(Boolean.class)) {
@@ -139,6 +148,9 @@ public interface TypeUtil {
 			}
 			if(cls.equals(double.class) || cls.equals(Double.class)) {
 				return (T) (Object) ((Integer) val).doubleValue();
+			}
+			if(cls.equals(String.class)) {
+				return (T) val;
 			}
 		}
 		if(val instanceof Long) {
@@ -163,6 +175,9 @@ public interface TypeUtil {
 			if(cls.equals(double.class) || cls.equals(Double.class)) {
 				return (T) (Object) ((Long) val).doubleValue();
 			}
+			if(cls.equals(String.class)) {
+				return (T) val;
+			}
 		}
 		if(val instanceof Float) {
 			if(cls.equals(boolean.class) || cls.equals(Boolean.class)) {
@@ -185,6 +200,9 @@ public interface TypeUtil {
 			}
 			if(cls.equals(double.class) || cls.equals(Double.class)) {
 				return (T) (Object) ((Float) val).doubleValue();
+			}
+			if(cls.equals(String.class)) {
+				return (T) val;
 			}
 		}
 		if(val instanceof Double) {
@@ -209,13 +227,16 @@ public interface TypeUtil {
 			if(cls.equals(float.class) || cls.equals(Float.class)) {
 				throw new ClassCastException("Cannot cast double to float");
 			}
+			if(cls.equals(String.class)) {
+				return (T) val;
+			}
 		}
 
 		final Class valCls = val.getClass();
 		if(cls.isAssignableFrom(valCls) || typeEquals(cls, valCls)) {
 			return (T) val;
-		} else {
-			throw new ClassCastException("Cannot cast " + valCls + " to " + cls);
 		}
+
+		throw new ClassCastException("Cannot cast " + valCls + " to " + cls);
 	}
 }
