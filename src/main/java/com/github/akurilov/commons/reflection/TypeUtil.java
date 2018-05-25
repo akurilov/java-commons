@@ -1,5 +1,8 @@
 package com.github.akurilov.commons.reflection;
 
+import java.util.Arrays;
+import java.util.List;
+
 public interface TypeUtil {
 
 	/**
@@ -264,6 +267,9 @@ public interface TypeUtil {
 			}
 			if(cls.equals(double.class) || cls.equals(Double.class)) {
 				return (T) (Object) Double.parseDouble(s);
+			}
+			if(cls.equals(List.class)) {
+				return (T) Arrays.asList(s.split(","));
 			}
 		}
 

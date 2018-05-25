@@ -43,6 +43,8 @@ public class TypeUtilTest {
 		System.out.println(typeConvert(42L, double.class));
 		System.out.println(typeConvert((float) 42.0, float.class));
 		System.out.println(typeConvert(Arrays.asList(1, 2, 3), List.class));
+		System.out.println(typeConvert("12,34,abc,", List.class));
+		System.out.println(Arrays.toString(typeConvert("12,34,abc,", String[].class)));
 		System.out.println(typeConvert(null, Integer.class));
 	}
 
