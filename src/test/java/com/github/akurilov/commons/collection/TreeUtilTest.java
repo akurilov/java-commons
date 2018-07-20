@@ -88,15 +88,6 @@ public class TreeUtilTest {
 
 		final List<Map<String, Object>> forest = Arrays.asList(
 			new HashMap<String, Object>() {{
-				put("a", 0);
-				put(
-					"b",
-					new HashMap<String, Object>() {{
-						put("aa", Arrays.asList(1, 2, 3));
-					}}
-				);
-			}},
-			new HashMap<String, Object>() {{
 				put("a", 1);
 				put(
 					"b",
@@ -109,6 +100,15 @@ public class TreeUtilTest {
 								put("ccc", null);
 							}}
 						);
+					}}
+				);
+			}},
+			new HashMap<String, Object>() {{
+				put("a", 0);
+				put(
+					"b",
+					new HashMap<String, Object>() {{
+						put("aa", Arrays.asList(1, 2, 3));
 					}}
 				);
 			}},

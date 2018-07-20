@@ -34,17 +34,6 @@ extends Closeable {
 	throws IOException;
 	
 	/**
-	 Bulk items get method useful for remote invocation.
-	 @return the items, null if the method is disabled
-	 @throws EOFException if not items available more
-	 @throws IOException if failed to get for some reason
-	 */
-	default List<I> getAll()
-	throws IOException {
-		return null;
-	}
-	
-	/**
 	 * Skip some items.
 	 * @param count count of items should be skipped from the input stream
 	 * @throws IOException if failed to skip such amount of bytes
