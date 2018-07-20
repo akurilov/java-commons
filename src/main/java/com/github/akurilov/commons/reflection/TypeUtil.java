@@ -268,6 +268,9 @@ public interface TypeUtil {
 			if(cls.equals(double.class) || cls.equals(Double.class)) {
 				return (T) (Object) Double.parseDouble(s);
 			}
+			if(cls.equals(String[].class)) {
+				return (T) s.split(",");
+			}
 			if(cls.equals(List.class)) {
 				return (T) Arrays.asList(s.split(","));
 			}
