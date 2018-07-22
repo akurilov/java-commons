@@ -1,5 +1,6 @@
 package com.github.akurilov.commons.collection;
 
+import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
 import java.nio.InvalidMarkException;
 
@@ -7,6 +8,7 @@ public final class ObjectBufferImpl<T extends Comparable<T>>
 implements ObjectBuffer<T> {
 
 	private final T[] buff;
+	private final int offset;
 
 	private int mark = -1;
 	private int position = 0;
@@ -14,19 +16,34 @@ implements ObjectBuffer<T> {
 	private int capacity;
 
 	@SuppressWarnings("unchecked")
-	ObjectBufferImpl(final int capacity)
-	throws IllegalArgumentException {
-		if(capacity < 0) {
-			throw new IllegalArgumentException("Negative capacity: " + capacity);
-		}
-		this.capacity = capacity;
-		buff = (T[]) new Object[capacity];
-		limit = capacity;
+	ObjectBufferImpl(final int capacity) {
+		this((T[]) new Object[capacity]);
 	}
 
-	final int nextGetIndex() {
-		if (position >= limit)
+	/**
+	 Wrap constructor
+	 */
+	ObjectBufferImpl(final T[] buff) {
+		this(buff, 0, buff.length);
+	}
+
+	/**
+	 Wrap slice constructor
+	 @param buff
+	 @param offset
+	 @param length
+	 */
+	ObjectBufferImpl(final T[] buff, final int offset, final int length) {
+		this.buff = buff;
+		this.offset = offset;
+		this.capacity = buff.length;
+		this.limit = capacity;
+	}
+
+	private int nextGetIndex() {
+		if(position >= limit) {
 			throw new BufferUnderflowException();
+		}
 		return position++;
 	}
 
@@ -40,7 +57,7 @@ implements ObjectBuffer<T> {
 		return buff[checkIndex(i)];
 	}
 
-	final int checkIndex(int i) {
+	private int checkIndex(int i) {
 		if((i < 0) || (i >= limit)) {
 			throw new IndexOutOfBoundsException();
 		}
@@ -49,37 +66,72 @@ implements ObjectBuffer<T> {
 
 	@Override
 	public final ObjectBufferImpl<T> get(final T[] dst) {
-		return null;
+		return get(dst, 0, dst.length);
 	}
 
 	@Override
 	public final ObjectBufferImpl<T> get(final T[] dst, final int offset, final int length) {
-		return null;
+		checkBounds(length, dst.length);
+		if (length > remaining())
+			throw new BufferUnderflowException();
+		System.arraycopy(buff, position(), dst, offset, length);
+		position(position() + length);
+		return this;
+	}
+
+	private static void checkBounds(final int len, final int size) {
+		if((len | (size - len)) < 0) {
+			throw new IndexOutOfBoundsException();
+		}
 	}
 
 	@Override
 	public final ObjectBufferImpl<T> put(final T val) {
-		return null;
+		buff[nextPutIndex()] = val;
+		return this;
+	}
+
+	private int nextPutIndex() {
+		if(position >= limit) {
+			throw new BufferOverflowException();
+		}
+		return position ++;
 	}
 
 	@Override
 	public final ObjectBufferImpl<T> put(final T[] vals) {
-		return null;
+		return put(vals, 0, vals.length);
 	}
 
 	@Override
-	public final ObjectBufferImpl<T> put(final byte[] src, final int offset, final int length) {
-		return null;
+	public final ObjectBufferImpl<T> put(final T[] src, final int offset, final int length) {
+		checkBounds(length, src.length);
+		if(length > remaining()) {
+			throw new BufferOverflowException();
+		}
+		System.arraycopy(src, offset, buff, position(), length);
+		position(position() + length);
+		return this;
 	}
 
 	@Override
 	public final ObjectBufferImpl<T> put(final ObjectBuffer<T> src) {
-		return null;
+		if(src == this) {
+			throw new IllegalArgumentException();
+		}
+		final int n = src.remaining();
+		if(n > remaining()) {
+			throw new BufferOverflowException();
+		}
+		src.get(buff, position(), n);
+		position(position() + n);
+		return this;
 	}
 
 	@Override
-	public final ObjectBufferImpl<T> put(final int index, final T val) {
-		return null;
+	public final ObjectBufferImpl<T> put(final int i, final T val) {
+		buff[checkIndex(i)] = val;
+		return this;
 	}
 
 	@Override
@@ -188,5 +240,36 @@ implements ObjectBuffer<T> {
 			}
 		}
 		return this.remaining() - o.remaining();
+	}
+
+	@Override
+	public final int hashCode() {
+		int h = 1;
+		final int p = position();
+		for(int i = limit() - 1; i >= p; i --) {
+			h = 31 * h + (int) get(i);
+		}
+		return h;
+	}
+
+	@SuppressWarnings("unchecked") @Override
+	public final boolean equals(final Object o) {
+		if(this == o) {
+			return true;
+		}
+		if(!(o instanceof ObjectBufferImpl)) {
+			return false;
+		}
+		final ObjectBufferImpl<T> that = (ObjectBufferImpl<T>) o;
+		if(this.remaining() != that.remaining()) {
+			return false;
+		}
+		final int p = this.position();
+		for(int i = this.limit() - 1, j = that.limit() - 1; i >= p; i --, j --) {
+			if(this.get(i) != that.get(j)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

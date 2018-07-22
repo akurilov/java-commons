@@ -10,6 +10,10 @@ extends Comparable<ObjectBuffer<T>> {
 		return new ObjectBufferImpl<>(capacity);
 	}
 
+	static <T extends Comparable<T>> ObjectBuffer<T> wrap(final T[] buff) {
+		return new ObjectBufferImpl<>(buff);
+	}
+
 	T get();
 
 	ObjectBuffer<T> get(final T[] dst);
@@ -22,11 +26,11 @@ extends Comparable<ObjectBuffer<T>> {
 
 	ObjectBuffer<T> put(final T[] vals);
 
-	ObjectBuffer<T> put(byte[] src, int offset, int length);
+	ObjectBuffer<T> put(final T[] src, int offset, int length);
 
 	ObjectBuffer<T> put(final ObjectBuffer<T> src);
 
-	ObjectBuffer<T> put(final int index, final T val);
+	ObjectBuffer<T> put(final int i, final T val);
 
 	T[] array();
 
