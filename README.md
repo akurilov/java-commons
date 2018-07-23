@@ -10,15 +10,9 @@ compile group: 'com.github.akurilov', name: 'java-commons', version: '2.1.4'
 
 ## Collections
 
-### Optionally Locking Buffer
+### Circular Buffer
 
-Allows to avoid the thread blocking due to necessary synchronization.
-Use Java's ```Lock.tryLock()``` method to perform an effort to obtain the exclusive lock immediately.
-Skip all the subsequent actions if this particular required lock is held by another thread.
-The class ```OptLockArrayBuffer``` is designed to support the optional locking.
-
-Publishing the ```ArrayList.removeRange(from, to)``` method allows to recycle the buffer after it
-partially consumed w/o redundant instantiation. The interface ```OptLockBuffer``` is designed to support the range removing method.
+Allows to reuse the buffer for the elements inserting and removing w/o memory copy.
 
 ### Trees
 
