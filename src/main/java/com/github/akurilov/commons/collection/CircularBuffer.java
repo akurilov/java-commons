@@ -1,7 +1,9 @@
 package com.github.akurilov.commons.collection;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public interface CircularBuffer<E>
 extends List<E> {
@@ -69,7 +71,23 @@ extends List<E> {
 	E remove(final int i)
 	throws IndexOutOfBoundsException, UnsupportedOperationException;
 
-	CircularBuffer<E> removeFirst(final int n);
+	/**
+	 Remove the elements from the beginning.
+	 @param n the count of elements to remove
+	 @return this
+	 @throws IndexOutOfBoundsException if the count of elements to remove is more than the current size
+	 */
+	CircularBuffer<E> removeFirst(final int n)
+	throws IndexOutOfBoundsException;
+
+	/**
+	 Remove the last elements
+	 @param n the count of elements to remove
+	 @return this
+	 @throws IndexOutOfBoundsException if the count of elements to remove is more than the current size
+	 */
+	CircularBuffer<E> removeLast(final int n)
+	throws IndexOutOfBoundsException;
 
 	/**
 	 * Not supported
@@ -77,5 +95,27 @@ extends List<E> {
 	 */
 	@Override
 	List<E> subList(final int fromIndex, final int toIndex)
+	throws UnsupportedOperationException;
+
+	/**
+	 @return the iterator instance
+	 */
+	@Override
+	Iterator<E> iterator();
+
+	/**
+	 Not supported
+	 @throws UnsupportedOperationException always
+	 */
+	@Override
+	ListIterator<E> listIterator()
+	throws UnsupportedOperationException;
+
+	/**
+	 Not supported
+	 @throws UnsupportedOperationException always
+	 */
+	@Override
+	ListIterator<E> listIterator(final int i)
 	throws UnsupportedOperationException;
 }

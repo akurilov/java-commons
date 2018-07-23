@@ -3,7 +3,10 @@ package com.github.akurilov.commons.collection;
 import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.RandomAccess;
 
 public final class CircularArrayBuffer<E>
@@ -100,12 +103,7 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 		if(isEmpty()) {
 			throw new IndexOutOfBoundsException();
 		}
-		final int j = translateIndex(i);
-		if(j < end) {
-			return array[j];
-		} else {
-			throw new IndexOutOfBoundsException();
-		}
+		return array[translateIndex(i)];
 	}
 
 	@Override
@@ -113,14 +111,9 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 		if(isEmpty()) {
 			throw new IndexOutOfBoundsException();
 		}
-		final E prev;
 		final int j = translateIndex(i);
-		if(j < end) {
-			prev = array[j];
-			array[j] = e;
-		} else {
-			throw new IndexOutOfBoundsException();
-		}
+		final E prev = array[j];
+		array[j] = e;
 		return prev;
 	}
 
@@ -156,14 +149,71 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 		} else if(size() == n) {
 			clear();
 		} else {
-			offset += n;
-			offset %= capacity;
+			offset = (offset + n) % capacity;
+		}
+		return this;
+	}
+
+	@Override
+	public final CircularArrayBuffer<E> removeLast(final int n) {
+		if(size() < n) {
+			throw new IndexOutOfBoundsException();
+		} else if(size() == n) {
+			clear();
+		} else {
+			if(n > end) {
+				end = capacity + end - n;
+			} else {
+				end -= n;
+			}
 		}
 		return this;
 	}
 
 	@Override
 	public final List<E> subList(final int fromIndex, final int toIndex) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public final Iterator<E> iterator() {
+		return new IteratorImpl<>(this);
+	}
+
+	private static final class IteratorImpl<E>
+	implements Iterator<E> {
+
+		private CircularBuffer<E> buff;
+		private final int size;
+		private int i = 0;
+
+		private IteratorImpl(final CircularBuffer<E> buff) {
+			this.buff = buff;
+			this.size = buff.size();
+		}
+
+		@Override
+		public final boolean hasNext() {
+			return i < size;
+		}
+
+		@Override
+		public final E next() {
+			try {
+				return buff.get(i ++);
+			} catch(final IndexOutOfBoundsException e) {
+				throw new NoSuchElementException();
+			}
+		}
+	}
+
+	@Override
+	public final ListIterator<E> listIterator() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public final ListIterator<E> listIterator(final int i) {
 		throw new UnsupportedOperationException();
 	}
 
