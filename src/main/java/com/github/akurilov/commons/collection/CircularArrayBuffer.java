@@ -2,6 +2,7 @@ package com.github.akurilov.commons.collection;
 
 import java.io.Serializable;
 import java.util.AbstractList;
+import java.util.Collection;
 import java.util.List;
 import java.util.RandomAccess;
 
@@ -77,6 +78,24 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 	}
 
 	@Override
+	public final boolean addAll(final Collection<? extends E> elements) {
+		if(capacity - size() < elements.size()) {
+			return false;
+		} else {
+			for(final E e: elements) {
+				if(isEmpty()) {
+					array[offset] = e;
+					end = offset + 1;
+				} else if(size() < capacity) {
+					array[end] = e;
+					end = incrementIndex(end);
+				}
+			}
+			return true;
+		}
+	}
+
+	@Override
 	public final E get(final int i) {
 		if(isEmpty()) {
 			throw new IndexOutOfBoundsException();
@@ -131,6 +150,19 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 	}
 
 	@Override
+	public final CircularArrayBuffer<E> removeFirst(final int n) {
+		if(size() < n) {
+			throw new IndexOutOfBoundsException();
+		} else if(size() == n) {
+			clear();
+		} else {
+			offset += n;
+			offset %= capacity;
+		}
+		return this;
+	}
+
+	@Override
 	public final List<E> subList(final int fromIndex, final int toIndex) {
 		throw new UnsupportedOperationException();
 	}
@@ -149,14 +181,6 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 			return i + 1;
 		} else {
 			return 0;
-		}
-	}
-
-	private int decrementIndex(final int i) {
-		if(i > 0) {
-			return i - 1;
-		} else {
-			return capacity - 1;
 		}
 	}
 }

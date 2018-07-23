@@ -1,5 +1,6 @@
 package com.github.akurilov.commons.collection;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface CircularBuffer<E>
@@ -31,6 +32,13 @@ extends List<E> {
 	boolean add(final E e);
 
 	/**
+	 * @param elements
+	 * @return true if all elements have been added, false if not enough capacity
+	 */
+	@Override
+	boolean addAll(final Collection<? extends E> elements);
+
+	/**
 	 * @param i element index
 	 * @return element
 	 * @throws IndexOutOfBoundsException if the index is out of bounds
@@ -60,6 +68,8 @@ extends List<E> {
 	@Override
 	E remove(final int i)
 	throws IndexOutOfBoundsException, UnsupportedOperationException;
+
+	CircularBuffer<E> removeFirst(final int n);
 
 	/**
 	 * Not supported
