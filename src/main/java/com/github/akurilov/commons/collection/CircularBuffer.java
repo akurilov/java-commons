@@ -18,13 +18,10 @@ extends List<E> {
 	 */
 	int offset();
 
-	/** set the 1st element index
-	 * @param i the new 1st element index
-	 * @return this
-	 * @throws IndexOutOfBoundsException if the specified index is out of capacity bounds
+	/**
+	 @return the index which points to the next element after the last one (exclusive), -1 if the buffer is empty
 	 */
-	CircularBuffer<E> offset(final int i)
-	throws IndexOutOfBoundsException;
+	int end();
 
 	/**
 	 * @param e element to add to the end of the buffer

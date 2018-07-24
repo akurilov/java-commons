@@ -9,15 +9,15 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.RandomAccess;
 
-public final class CircularArrayBuffer<E>
+public class CircularArrayBuffer<E>
 extends AbstractList<E>
 implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 
 	private volatile int offset = 0;
 	private volatile int end = -1;
 
-	private final E[] array;
-	private final int capacity;
+	protected final E[] array;
+	protected final int capacity;
 
 	@SuppressWarnings("unchecked")
 	public CircularArrayBuffer(final int capacity) {
@@ -36,11 +36,8 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 	}
 
 	@Override
-	public final CircularArrayBuffer<E> offset(final int i) {
-		if(i < 0 || i > capacity - 1) {
-			throw new IndexOutOfBoundsException();
-		}
-		return this;
+	public final int end() {
+		return end;
 	}
 
 	@Override
@@ -60,7 +57,7 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 	}
 
 	@Override
-	public void clear() {
+	public final void clear() {
 		offset = 0;
 		end = -1;
 	}
@@ -69,11 +66,11 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 	public final boolean add(final E e) {
 		if(isEmpty()) {
 			array[offset] = e;
-			end = offset + 1;
+			end = increaseIndex(offset, 1);
 			return true;
 		} else if(size() < capacity) {
 			array[end] = e;
-			end = incrementIndex(end);
+			end = increaseIndex(end, 1);
 			return true;
 		} else {
 			return false;
@@ -82,16 +79,17 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 
 	@Override
 	public final boolean addAll(final Collection<? extends E> elements) {
-		if(capacity - size() < elements.size()) {
+		final int elementsCount = elements.size();
+		if(capacity - size() < elementsCount) {
 			return false;
 		} else {
 			for(final E e: elements) {
 				if(isEmpty()) {
 					array[offset] = e;
-					end = offset + 1;
+					end = increaseIndex(offset, 1);
 				} else if(size() < capacity) {
 					array[end] = e;
-					end = incrementIndex(end);
+					end = increaseIndex(end, 1);
 				}
 			}
 			return true;
@@ -99,7 +97,7 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 	}
 
 	@Override
-	public final E get(final int i) {
+	public E get(final int i) {
 		if(isEmpty()) {
 			throw new IndexOutOfBoundsException();
 		}
@@ -107,9 +105,9 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 	}
 
 	@Override
-	public final E set(final int i, final E e) {
+	public E set(final int i, final E e) {
 		if(isEmpty()) {
-			throw new IndexOutOfBoundsException();
+			throw new IndexOutOfBoundsException(Integer.toString(i));
 		}
 		final int j = translateIndex(i);
 		final E prev = array[j];
@@ -118,9 +116,9 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 	}
 
 	@Override
-	public E remove(final int i) {
+	public final E remove(final int i) {
 		if(isEmpty()) {
-			throw new IndexOutOfBoundsException();
+			throw new IndexOutOfBoundsException(Integer.toString(i));
 		}
 		final E e;
 		if(size() == 1) {
@@ -130,13 +128,13 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 			final int j = translateIndex(i);
 			e = array[j];
 			if(j == offset) {
-				offset = incrementIndex(offset);
+				offset = increaseIndex(offset, 1);
 			} else if(end > 0 && j == end - 1) {
 				end --;
 			} else if(end == 0 && j == capacity - 1) {
 				end = capacity - 1;
 			} else {
-				throw new UnsupportedOperationException();
+				throw new UnsupportedOperationException("Able to remove only from the beginning either end");
 			}
 		}
 		return e;
@@ -149,7 +147,7 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 		} else if(size() == n) {
 			clear();
 		} else {
-			offset = (offset + n) % capacity;
+			offset = increaseIndex(offset, n);
 		}
 		return this;
 	}
@@ -171,29 +169,43 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 	}
 
 	@Override
-	public final List<E> subList(final int fromIndex, final int toIndex) {
+	public List<E> subList(final int fromIndex, final int toIndex) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public final Iterator<E> iterator() {
-		return new IteratorImpl<>(this);
+	public Iterator<E> iterator() {
+		return new ListIteratorImpl<>(this, 0);
 	}
 
-	private static final class IteratorImpl<E>
-	implements Iterator<E> {
+	@Override
+	public ListIterator<E> listIterator() {
+		return new ListIteratorImpl<>(this, 0);
+	}
 
-		private CircularBuffer<E> buff;
-		private final int size;
-		private int i = 0;
+	@Override
+	public ListIterator<E> listIterator(final int i) {
+		return new ListIteratorImpl<>(this, i);
+	}
 
-		private IteratorImpl(final CircularBuffer<E> buff) {
+	protected static class ListIteratorImpl<E>
+	implements ListIterator<E> {
+
+		protected final CircularBuffer<E> buff;
+		protected final int size;
+		protected final int startIndex;
+
+		private int i;
+
+		protected ListIteratorImpl(final CircularBuffer<E> buff, final int startIndex) {
 			this.buff = buff;
 			this.size = buff.size();
+			this.startIndex = startIndex;
+			this.i = startIndex;
 		}
 
 		@Override
-		public final boolean hasNext() {
+		public boolean hasNext() {
 			return i < size;
 		}
 
@@ -205,32 +217,65 @@ implements CircularBuffer<E>, Cloneable, RandomAccess, Serializable {
 				throw new NoSuchElementException();
 			}
 		}
-	}
 
-	@Override
-	public final ListIterator<E> listIterator() {
-		throw new UnsupportedOperationException();
-	}
+		/**
+		 @throws UnsupportedOperationException always, as far as remove is not supported
+		 */
+		@Override
+		public final void remove() {
+			throw new UnsupportedOperationException("Removing an element is not supported");
+		}
 
-	@Override
-	public final ListIterator<E> listIterator(final int i) {
-		throw new UnsupportedOperationException();
+		@Override
+		public boolean hasPrevious() {
+			return i > startIndex;
+		}
+
+		@Override
+		public final E previous() {
+			if(hasPrevious()) {
+				return buff.get(-- i);
+			} else {
+				throw new NoSuchElementException();
+			}
+		}
+
+		@Override
+		public int nextIndex() {
+			return i;
+		}
+
+		@Override
+		public int previousIndex() {
+			return i - 1;
+		}
+
+		@Override
+		public void set(final E e)
+		throws IndexOutOfBoundsException {
+			buff.set(i, e);
+		}
+
+		/**
+		 @throws UnsupportedOperationException always, as far as inserting an element is not supported
+		 */
+		@Override
+		public final void add(final E e)
+		throws UnsupportedOperationException {
+			throw new UnsupportedOperationException("Inserting an element is not supported");
+		}
 	}
 
 	private int translateIndex(final int i)
 	throws IndexOutOfBoundsException {
-		if(i < capacity - 1) {
+		if(i < size()) {
 			return (offset + i) % capacity;
 		} else {
-			throw new IndexOutOfBoundsException();
+			throw new IndexOutOfBoundsException(Integer.toString(i));
 		}
 	}
 
-	private int incrementIndex(final int i) {
-		if(i < capacity - 1) {
-			return i + 1;
-		} else {
-			return 0;
-		}
+	private int increaseIndex(final int i, final int n) {
+		return (i + n) % capacity;
 	}
 }
