@@ -11,7 +11,7 @@ allprojects {
 	apply plugin: "maven"
 	apply plugin: "signing"
 	group = "com.github.akurilov"
-	version = "2.1.5"
+	version = "2.1.6"
 }
 
 ext {
@@ -66,11 +66,16 @@ ext {
 		"it/unimi/dsi/fastutil/ints/IntIterable.class",
 		"it/unimi/dsi/fastutil/ints/Int2ObjectFunction.class",
 		"it/unimi/dsi/fastutil/ints/Int2ObjectOpenHashMap.class",
+		"it/unimi/dsi/fastutil/ints/Int2ObjectOpenHashMap\$KeyIterator.class",
+		"it/unimi/dsi/fastutil/ints/Int2ObjectOpenHashMap\$KeySet.class",
+		"it/unimi/dsi/fastutil/ints/Int2ObjectOpenHashMap\$MapIterator.class",
 		"it/unimi/dsi/fastutil/ints/IntArrays.class",
 		"it/unimi/dsi/fastutil/ints/IntCollection.class",
 		"it/unimi/dsi/fastutil/ints/AbstractInt2IntFunction.class",
 		"it/unimi/dsi/fastutil/ints/Int2ObjectMap.class",
+		"it/unimi/dsi/fastutil/ints/Int2ObjectMap\$FastEntrySet.class",
 		"it/unimi/dsi/fastutil/ints/Int2IntMap.class",
+		"it/unimi/dsi/fastutil/ints/Int2IntMap\$FastEntrySet.class",
 		"it/unimi/dsi/fastutil/ints/IntIterators.class",
 		"it/unimi/dsi/fastutil/ints/IntComparator.class",
 		"it/unimi/dsi/fastutil/ints/AbstractIntListIterator.class",
