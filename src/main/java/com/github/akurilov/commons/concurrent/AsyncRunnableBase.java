@@ -22,37 +22,72 @@ implements AsyncRunnable {
 
 	@Override
 	public final State state() {
-		return state;
+		stateLock.lock();
+		try {
+			return state;
+		} finally {
+			stateLock.unlock();
+		}
 	}
 
 	@Override
 	public boolean isInitial() {
-		return INITIAL == state;
+		stateLock.lock();
+		try {
+			return INITIAL == state;
+		} finally {
+			stateLock.unlock();
+		}
 	}
 
 	@Override
 	public boolean isStarted() {
-		return STARTED == state;
+		stateLock.lock();
+		try {
+			return STARTED == state;
+		} finally {
+			stateLock.unlock();
+		}
 	}
 
 	@Override
 	public boolean isShutdown() {
-		return SHUTDOWN == state;
+		stateLock.lock();
+		try {
+			return SHUTDOWN == state;
+		} finally {
+			stateLock.unlock();
+		}
 	}
 
 	@Override
 	public boolean isStopped() {
-		return STOPPED == state;
+		stateLock.lock();
+		try {
+			return STOPPED == state;
+		} finally {
+			stateLock.unlock();
+		}
 	}
 
 	@Override
 	public boolean isFinished() {
-		return FINISHED == state;
+		stateLock.lock();
+		try {
+			return FINISHED == state;
+		} finally {
+			stateLock.unlock();
+		}
 	}
 
 	@Override
 	public boolean isClosed() {
-		return null == state;
+		stateLock.lock();
+		try {
+			return null == state;
+		} finally {
+			stateLock.unlock();
+		}
 	}
 
 	@Override

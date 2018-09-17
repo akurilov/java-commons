@@ -3,7 +3,7 @@
 ## Gradle
 
 ```groovy
-compile group: 'com.github.akurilov', name: 'java-commons', version: '2.1.6'
+compile group: 'com.github.akurilov', name: 'java-commons', version: '2.1.7'
 ```
 
 # Library Content
@@ -23,6 +23,22 @@ Allows to reuse the buffer for the elements inserting and removing w/o memory co
 * Reduce a forest into a tree
 
 ### Range
+
+TODO
+
+## Concurrency
+
+### AsyncRunnable
+
+TODO
+
+### Throttles
+
+TODO
+
+## Functional Programming
+
+### Partial Functions
 
 TODO
 
