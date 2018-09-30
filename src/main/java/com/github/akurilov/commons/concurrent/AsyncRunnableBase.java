@@ -22,72 +22,37 @@ implements AsyncRunnable {
 
 	@Override
 	public final State state() {
-		stateLock.lock();
-		try {
-			return state;
-		} finally {
-			stateLock.unlock();
-		}
+		return state;
 	}
 
 	@Override
 	public boolean isInitial() {
-		stateLock.lock();
-		try {
-			return INITIAL == state;
-		} finally {
-			stateLock.unlock();
-		}
+		return INITIAL == state;
 	}
 
 	@Override
 	public boolean isStarted() {
-		stateLock.lock();
-		try {
-			return STARTED == state;
-		} finally {
-			stateLock.unlock();
-		}
+		return STARTED == state;
 	}
 
 	@Override
 	public boolean isShutdown() {
-		stateLock.lock();
-		try {
-			return SHUTDOWN == state;
-		} finally {
-			stateLock.unlock();
-		}
+		return SHUTDOWN == state;
 	}
 
 	@Override
 	public boolean isStopped() {
-		stateLock.lock();
-		try {
-			return STOPPED == state;
-		} finally {
-			stateLock.unlock();
-		}
+		return STOPPED == state;
 	}
 
 	@Override
 	public boolean isFinished() {
-		stateLock.lock();
-		try {
-			return FINISHED == state;
-		} finally {
-			stateLock.unlock();
-		}
+		return FINISHED == state;
 	}
 
 	@Override
 	public boolean isClosed() {
-		stateLock.lock();
-		try {
-			return null == state;
-		} finally {
-			stateLock.unlock();
-		}
+		return null == state;
 	}
 
 	@Override
@@ -173,11 +138,8 @@ implements AsyncRunnable {
 						elapsedTimeMillis = System.currentTimeMillis() - invokeTimeMillis;
 						// recheck for the timeout condition
 						if(timeOutMillis > elapsedTimeMillis) {
-							if(
-								stateChanged.await(
-									timeOutMillis - elapsedTimeMillis, TimeUnit.MILLISECONDS
-								)
-							) { // the state is changed, recheck the condition
+							if(stateChanged.await(timeOutMillis - elapsedTimeMillis, TimeUnit.MILLISECONDS)) {
+								// the state is changed, recheck the condition
 								if(state != STARTED && state != SHUTDOWN) {
 									return true;
 								} // continue otherwise (no timeout yet, condition is not reached)
