@@ -96,7 +96,7 @@ implements AsyncRunnable {
 	throws IllegalStateException {
 		// shutdown first
 		try {
-			stop();
+			shutdown();
 		} catch(final IllegalStateException ignored) {
 		}
 		// then stop actually
