@@ -65,9 +65,7 @@ implements AsyncRunnable {
 				state = STARTED;
 				stateChanged.signalAll();
 			} else {
-				throw new IllegalStateException(
-					"Not allowed to start while state is \"" + state + "\""
-				);
+				throw new IllegalStateException("Not allowed to start while state is \"" + state + "\"");
 			}
 		} finally {
 			stateLock.unlock();
@@ -85,9 +83,7 @@ implements AsyncRunnable {
 				state = SHUTDOWN;
 				stateChanged.signalAll();
 			} else {
-				throw new IllegalStateException(
-					"Not allowed to shutdown while state is \"" + state + "\""
-				);
+				throw new IllegalStateException("Not allowed to shutdown while state is \"" + state + "\"");
 			}
 		} finally {
 			stateLock.unlock();
@@ -98,16 +94,20 @@ implements AsyncRunnable {
 	@Override
 	public final AsyncRunnableBase stop()
 	throws IllegalStateException {
+		// shutdown first
+		try {
+			stop();
+		} catch(final IllegalStateException ignored) {
+		}
+		// then stop actually
 		stateLock.lock();
 		try {
-			if(state == STARTED || state == SHUTDOWN) {
+			if(state == SHUTDOWN) {
 				doStop();
 				state = STOPPED;
 				stateChanged.signalAll();
 			} else {
-				throw new IllegalStateException(
-					"Not allowed to stop while state is \"" + state + "\""
-				);
+				throw new IllegalStateException("Not allowed to stop while state is \"" + state + "\"");
 			}
 		} finally {
 			stateLock.unlock();
