@@ -8,7 +8,7 @@ public interface AsyncRunnable
 extends Closeable {
 
 	enum State {
-		INITIAL, STARTED, SHUTDOWN, STOPPED, FINISHED
+		INITIAL, STARTED, SHUTDOWN, STOPPED, CLOSED
 	}
 
 	/**
@@ -39,12 +39,6 @@ extends Closeable {
 	 @return true if the state is "stopped", false otherwise
 	 */
 	boolean isStopped()
-	throws RemoteException;
-
-	/**
-	 @return true if the state is "finished", false otherwise
-	 */
-	boolean isFinished()
 	throws RemoteException;
 
 	/**

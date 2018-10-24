@@ -6,7 +6,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.github.akurilov.commons.concurrent.AsyncRunnable.State.FINISHED;
+import static com.github.akurilov.commons.concurrent.AsyncRunnable.State.CLOSED;
 import static com.github.akurilov.commons.concurrent.AsyncRunnable.State.INITIAL;
 import static com.github.akurilov.commons.concurrent.AsyncRunnable.State.SHUTDOWN;
 import static com.github.akurilov.commons.concurrent.AsyncRunnable.State.STARTED;
@@ -46,13 +46,8 @@ implements AsyncRunnable {
 	}
 
 	@Override
-	public boolean isFinished() {
-		return FINISHED == state;
-	}
-
-	@Override
 	public boolean isClosed() {
-		return null == state;
+		return CLOSED == state;
 	}
 
 	@Override
@@ -169,7 +164,7 @@ implements AsyncRunnable {
 		try {
 			if(null != state) {
 				doClose();
-				state = null;
+				state = CLOSED;
 				stateChanged.signalAll();
 			}
 		} finally {
