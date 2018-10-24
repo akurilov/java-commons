@@ -5,7 +5,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.github.akurilov.commons.concurrent.AsyncRunnable.State.CLOSED;
@@ -55,8 +54,7 @@ implements AsyncRunnable {
 	}
 
 	@Override
-	public final AsyncRunnableBase start()
-	throws IllegalStateException {
+	public final AsyncRunnableBase start() {
 		stateLock.lock();
 		try {
 			if(state == INITIAL || state == STOPPED) {
@@ -64,7 +62,7 @@ implements AsyncRunnable {
 				state = STARTED;
 				stateChanged.signalAll();
 			} else {
-				throw new IllegalStateException("Not allowed to start while state is \"" + state + "\"");
+				LOG.warning("Not allowed to start while state is \"" + state + "\"");
 			}
 		} finally {
 			stateLock.unlock();
@@ -73,8 +71,7 @@ implements AsyncRunnable {
 	}
 
 	@Override
-	public final AsyncRunnableBase shutdown()
-	throws IllegalStateException {
+	public final AsyncRunnableBase shutdown() {
 		stateLock.lock();
 		try {
 			if(state == STARTED || state == INITIAL) {
@@ -82,7 +79,7 @@ implements AsyncRunnable {
 				state = SHUTDOWN;
 				stateChanged.signalAll();
 			} else {
-				throw new IllegalStateException("Not allowed to shutdown while state is \"" + state + "\"");
+				LOG.warning("Not allowed to shutdown while state is \"" + state + "\"");
 			}
 		} finally {
 			stateLock.unlock();
@@ -91,14 +88,9 @@ implements AsyncRunnable {
 	}
 
 	@Override
-	public final AsyncRunnableBase stop()
-	throws IllegalStateException {
+	public final AsyncRunnableBase stop() {
 		// shutdown first
-		try {
-			shutdown();
-		} catch(final IllegalStateException e) {
-			LOG.log(Level.WARNING, e, () -> "Failed to shutdown");
-		}
+		shutdown();
 		// then stop actually
 		stateLock.lock();
 		try {
@@ -107,7 +99,7 @@ implements AsyncRunnable {
 				state = STOPPED;
 				stateChanged.signalAll();
 			} else {
-				throw new IllegalStateException("Not allowed to stop while state is \"" + state + "\"");
+				LOG.warning("Not allowed to stop while state is \"" + state + "\"");
 			}
 		} finally {
 			stateLock.unlock();
@@ -117,14 +109,14 @@ implements AsyncRunnable {
 
 	@Override
 	public final AsyncRunnableBase await()
-	throws IllegalStateException, InterruptedException {
+	throws InterruptedException {
 		await(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
 		return this;
 	}
 
 	@Override
 	public boolean await(final long timeout, final TimeUnit timeUnit)
-	throws IllegalStateException, InterruptedException {
+	throws InterruptedException {
 		final long invokeTimeMillis = System.currentTimeMillis();
 		final long timeOutMillis = timeUnit.toMillis(timeout);
 		long elapsedTimeMillis;
@@ -158,17 +150,13 @@ implements AsyncRunnable {
 
 	@Override
 	public void close()
-	throws IllegalStateException, IOException {
+	throws IOException {
 		// stop first
-		try {
-			stop();
-		} catch(final IllegalStateException e) {
-			LOG.log(Level.WARNING, e, () -> "Failed to stop");
-		}
+		stop();
 		// then close actually
 		stateLock.lock();
 		try {
-			if(null != state) {
+			if(state != CLOSED) {
 				doClose();
 				state = CLOSED;
 				stateChanged.signalAll();
