@@ -5,6 +5,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.github.akurilov.commons.concurrent.AsyncRunnable.State.CLOSED;
 import static com.github.akurilov.commons.concurrent.AsyncRunnable.State.INITIAL;
@@ -14,6 +16,8 @@ import static com.github.akurilov.commons.concurrent.AsyncRunnable.State.STOPPED
 
 public abstract class AsyncRunnableBase
 implements AsyncRunnable {
+
+	private static final Logger LOG = Logger.getLogger(AsyncRunnableBase.class.getName());
 
 	private volatile State state = INITIAL;
 
@@ -92,7 +96,8 @@ implements AsyncRunnable {
 		// shutdown first
 		try {
 			shutdown();
-		} catch(final IllegalStateException ignored) {
+		} catch(final IllegalStateException e) {
+			LOG.log(Level.WARNING, e, () -> "Failed to shutdown");
 		}
 		// then stop actually
 		stateLock.lock();
@@ -157,7 +162,8 @@ implements AsyncRunnable {
 		// stop first
 		try {
 			stop();
-		} catch(final IllegalStateException ignored) {
+		} catch(final IllegalStateException e) {
+			LOG.log(Level.WARNING, e, () -> "Failed to stop");
 		}
 		// then close actually
 		stateLock.lock();
