@@ -77,7 +77,7 @@ implements AsyncRunnable {
 	throws IllegalStateException {
 		stateLock.lock();
 		try {
-			if(state == STARTED) {
+			if(state == STARTED || state == INITIAL) {
 				doShutdown();
 				state = SHUTDOWN;
 				stateChanged.signalAll();
