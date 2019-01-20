@@ -153,6 +153,10 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 	from sourceSets.main.allSource
 }
 
+javadoc {
+	options.addStringOption("-module-path", classpath.asPath)
+}
+
 task javadocJar(type: Jar, dependsOn: javadoc) {
 	classifier = "javadoc"
 	from javadoc.destinationDir
