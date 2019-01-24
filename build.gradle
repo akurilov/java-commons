@@ -11,7 +11,7 @@ allprojects {
 	apply plugin: "maven"
 	apply plugin: "signing"
 	group = "com.github.akurilov"
-	version = "2.2.2"
+	version = "2.2.3"
 }
 
 ext {
@@ -24,6 +24,7 @@ ext {
 		"it/unimi/dsi/fastutil/Arrays.class",
 		"it/unimi/dsi/fastutil/Swapper.class",
 		"it/unimi/dsi/fastutil/Hash.class",
+		"it/unimi/dsi/fastutil/Hash\$Strategy.class",
 		"it/unimi/dsi/fastutil/Function.class",
 		"it/unimi/dsi/fastutil/HashCommon.class",
 		"it/unimi/dsi/fastutil/objects/AbstractObjectCollection.class",
