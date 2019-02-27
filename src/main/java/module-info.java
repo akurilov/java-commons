@@ -17,8 +17,4 @@ module com.github.akurilov.commons {
 	exports com.github.akurilov.commons.net.ssl;
 	exports com.github.akurilov.commons.reflection;
 	exports com.github.akurilov.commons.system;
-	exports it.unimi.dsi.fastutil;
-	exports it.unimi.dsi.fastutil.bytes;
-	exports it.unimi.dsi.fastutil.ints;
-	exports it.unimi.dsi.fastutil.shorts;
 }
