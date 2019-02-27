@@ -3,6 +3,8 @@ module com.github.akurilov.commons {
 	requires java.base;
 	requires java.logging;
 	requires java.rmi;
+	requires juel.api;
+	requires juel.impl;
 
 	exports com.github.akurilov.commons.collection;
 	exports com.github.akurilov.commons.concurrent;
@@ -10,6 +12,7 @@ module com.github.akurilov.commons {
 	exports com.github.akurilov.commons.func;
 	exports com.github.akurilov.commons.io;
 	exports com.github.akurilov.commons.io.collection;
+	exports com.github.akurilov.commons.io.el;
 	exports com.github.akurilov.commons.io.file;
 	exports com.github.akurilov.commons.io.util;
 	exports com.github.akurilov.commons.math;

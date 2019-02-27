@@ -6,7 +6,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.LongAdder;
-import java.util.concurrent.locks.LockSupport;
 
 import static org.junit.Assert.assertEquals;
 
@@ -30,30 +29,12 @@ public class SequentialWeightsThrottleTest {
 
 	private final SequentialWeightsThrottle wt = new SequentialWeightsThrottle(weights);
 
-	private final class SubmTask
-		implements Runnable {
-		private final int origin;
-		public SubmTask(final int origin) {
-			this.origin = origin;
-		}
-		@Override
-		public final void run() {
-			while(true) {
-				if(wt.tryAcquire(origin)) {
-					resultCounters[origin].increment();
-				} else {
-					LockSupport.parkNanos(1);
-				}
-			}
-		}
-	}
-
 	@Test
 	public void testRequestApprovalFor()
 	throws Exception {
 		final ExecutorService es = Executors.newFixedThreadPool(2);
-		es.submit(new SubmTask(WRITE));
-		es.submit(new SubmTask(READ));
+		es.submit(new SubmTask(WRITE, wt, resultCounters));
+		es.submit(new SubmTask(READ, wt, resultCounters));
 		es.awaitTermination(10, TimeUnit.SECONDS);
 		es.shutdownNow();
 		final double writes = resultCounters[WRITE].sum();
@@ -62,32 +43,12 @@ public class SequentialWeightsThrottleTest {
 		System.out.println("Write rate: " + writes / 10 + " Hz, read rate: " + reads / 10 + " Hz");
 	}
 
-	private final class BatchSubmTask
-	implements Runnable {
-		private final int origin;
-		public BatchSubmTask(final int origin) {
-			this.origin = origin;
-		}
-		@Override
-		public final void run() {
-			int n;
-			while(true) {
-				n = wt.tryAcquire(origin, 128);
-				if(n > 0) {
-					resultCounters[origin].add(n);
-				} else {
-					LockSupport.parkNanos(1);
-				}
-			}
-		}
-	}
-
 	@Test
 	public void testRequestBatchApprovalFor()
 	throws Exception {
 		final ExecutorService es = Executors.newFixedThreadPool(2);
-		es.submit(new BatchSubmTask(WRITE));
-		es.submit(new BatchSubmTask(READ));
+		es.submit(new BatchSubmTask(WRITE, wt, resultCounters));
+		es.submit(new BatchSubmTask(READ, wt, resultCounters));
 		es.awaitTermination(10, TimeUnit.SECONDS);
 		es.shutdownNow();
 		final double writes = resultCounters[WRITE].sum();
