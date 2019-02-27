@@ -18,9 +18,9 @@ public class RateThrottleTest {
 	@Test
 	public void testRate100mHzNonBatch()
 	throws Exception {
-		final double rateLimit = 0.1;
+		final var rateLimit = 0.1;
 		final int timeLimitSec = 50;
-		final Throttle throttle = new RateThrottle(rateLimit);
+		final var throttle = (Throttle) new RateThrottle(rateLimit);
 		final LongAdder counter = new LongAdder();
 		final Thread submThread = new Thread(
 			() -> {
