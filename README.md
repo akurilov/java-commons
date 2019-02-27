@@ -113,6 +113,37 @@ TODO
 
 TODO
 
+### Expressions
+
+A values input evaluating an expression and returning the result. Utilizing the
+[Java Unified Expression Language](http://juel.sourceforge.net/index.html) functionality.
+
+Current time millis supplying example:
+```java
+    final var in = ExpressionInput.<Long>builder()
+        .expr("${time:millisSinceEpoch()}")
+        .type(long.class)
+        .func("time", "millisSinceEpoch", System.class.getMethod("currentTimeMillis"))
+        .build();
+    ...
+    System.out.println(in.get());
+```
+
+Custom random dynamic string with prefix example:
+```java
+    final IntFunction<String> idSupplier = (radix) -> Long.toString(
+        abs(Long.reverse(currentTimeMillis()) ^ Long.reverseBytes(nanoTime())),
+        radix
+    );
+    final var in = ExpressionInput.<String>builder()
+        .value("idSupplier", idSupplier, IntFunction.class)
+        .value("radix", 36, int.class)
+        .expr("prefix_${idSupplier.apply(radix)}")
+        .type(String.class)
+        .build();
+    System.out.println(in.get());
+```
+
 ### Text
 
 TODO
