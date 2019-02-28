@@ -5,18 +5,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.EOFException;
-import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BinFileIoTest {
-
-	private static final class Item
-	implements Serializable {
-		public int field1;
-		public String field2;
-	}
 
 	@Test
 	public final void testInputAfterOutput()
