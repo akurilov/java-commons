@@ -29,14 +29,14 @@ public class ExpressionInputTest {
 	@Test
 	public void testMillisSinceEpoch1()
 	throws Exception {
-		final var in = (ExternEvalExpressionInput<Long>) ExpressionInput.<Long>builder()
+		final var in = ExpressionInput.<Long>builder()
 			.expr("${time:millisSinceEpoch()}")
 			.type(long.class)
 			.func("time", "millisSinceEpoch", System.class.getMethod("currentTimeMillis"))
 			.sync(false)
 			.build();
 		assertNull(in.get());
-		in.run();
+		in.call();
 		final var t0 = currentTimeMillis();
 		final var t1 = Long.parseLong(in.get().toString());
 		final var t2 = currentTimeMillis();
@@ -57,6 +57,19 @@ public class ExpressionInputTest {
 			.expr("prefix_${idSupplier.apply(radix)}")
 			.type(String.class)
 			.build();
+		System.out.println(in.get());
+	}
+
+	@Test
+	public void testIota()
+	throws Exception {
+		final var in = ExpressionInput.<Integer>builder()
+			.expr("${x = x + 1}")
+			.initial(0)
+			.type(int.class)
+			.build();
+		System.out.println(in.get());
+		System.out.println(in.get());
 		System.out.println(in.get());
 	}
 }

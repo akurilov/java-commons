@@ -1,5 +1,7 @@
 package com.github.akurilov.commons.io.el;
 
+import de.odysseus.el.util.SimpleContext;
+
 import javax.el.ELContext;
 import javax.el.ELException;
 import javax.el.PropertyNotFoundException;
@@ -11,41 +13,51 @@ implements ExpressionInput<T> {
 
 	private final ValueExpression expr;
 	private final ELContext ctx;
+	private final T initial;
+	private volatile T last;
 
-	ExpressionInputImpl(final String exprStr, Class<T> resultType, final ELContext ctx) {
-		expr = FACTORY.createValueExpression(ctx, exprStr, resultType);
+	ExpressionInputImpl(final String exprStr, final T initial, Class<T> type, final SimpleContext ctx) {
+		this.last = this.initial = initial;
+		final var lastValExpr = FACTORY.createValueExpression(this.last, type);
+		ctx.setVariable(LAST_VALUE_ID, lastValExpr);
+		this.expr = FACTORY.createValueExpression(ctx, exprStr, type);
 		this.ctx = ctx;
 	}
 
 	@SuppressWarnings("unchecked")
-	final T eval()
-	throws NullPointerException, PropertyNotFoundException, ELException {
+	private T eval() {
 		return (T) expr.getValue(ctx);
 	}
 
 	@Override
-	public T get()
-	throws NullPointerException, PropertyNotFoundException, ELException {
-		return eval();
+	public final T call()
+	throws PropertyNotFoundException, ELException {
+		return last = eval();
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
+	public T get()
+	throws PropertyNotFoundException, ELException {
+		return last;
+	}
+
 	@Override
 	public int get(final List<T> buffer, final int limit)
-	throws NullPointerException, PropertyNotFoundException, ELException {
+	throws PropertyNotFoundException, ELException {
 		for(var i = 0; i < limit; i ++) {
-			buffer.add(eval());
+			buffer.add(last);
 		}
 		return limit;
 	}
 
 	@Override
-	public long skip(final long count)
-	throws NullPointerException, PropertyNotFoundException, ELException {
-		for(var i = 0; i < count; i ++) {
-			eval();
-		}
+	public long skip(final long count) {
 		return count;
+	}
+
+	@Override
+	public final void reset() {
+		last = initial;
 	}
 
 	@Override
@@ -65,6 +77,8 @@ implements ExpressionInput<T> {
 	}
 
 	@Override
-	public void close() {
+	public final void close() {
+		last = null;
 	}
+
 }
