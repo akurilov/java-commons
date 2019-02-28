@@ -15,6 +15,7 @@ module com.github.akurilov.commons {
 	exports com.github.akurilov.commons.io.el;
 	exports com.github.akurilov.commons.io.file;
 	exports com.github.akurilov.commons.io.util;
+	exports com.github.akurilov.commons.lang;
 	exports com.github.akurilov.commons.math;
 	exports com.github.akurilov.commons.net;
 	exports com.github.akurilov.commons.net.ssl;

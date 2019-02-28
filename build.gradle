@@ -82,6 +82,7 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 }
 
 javadoc {
+	failOnError false
 	options.addStringOption("-module-path", classpath.asPath)
 }
 
