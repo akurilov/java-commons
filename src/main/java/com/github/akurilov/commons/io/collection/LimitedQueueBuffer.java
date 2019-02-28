@@ -1,9 +1,10 @@
 package com.github.akurilov.commons.io.collection;
 
-import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+
+import static com.github.akurilov.commons.lang.Exceptions.throwUnchecked;
 
 /**
  * The blocking queue wrapped in order to act as output from the tail and as input from the head.
@@ -32,11 +33,9 @@ implements IoBuffer<T> {
 	 @param buffer the buffer containing the items to put
 	 @return the count of the items been written, may return less count than specified if not enough
 	 free capacity is in the queue
-	 @throws IOException doesn't throw
 	 */
 	@Override
-	public int put(final List<T> buffer, final int from, final int to)
-	throws IOException {
+	public int put(final List<T> buffer, final int from, final int to) {
 		int i = from;
 		while(i < to && queue.offer(buffer.get(i))) {
 			i ++;
@@ -45,29 +44,24 @@ implements IoBuffer<T> {
 	}
 	
 	@Override
-	public final int put(final List<T> items)
-	throws IOException {
+	public final int put(final List<T> items) {
 		return put(items, 0, items.size());
 	}
 
 	/**
 	 @return self
-	 @throws IOException doesn't throw
 	 */
 	@Override
-	public LimitedQueueBuffer<T> getInput()
-	throws IOException {
+	public LimitedQueueBuffer<T> getInput() {
 		return this;
 	}
 
 	/**
 	 Non-blocking get implementation
 	 @return the item or null if the buffer is empty
-	 @throws IOException doesn't throw
 	 */
 	@Override
-	public T get()
-	throws IOException {
+	public T get() {
 		return queue.poll();
 	}
 
@@ -75,22 +69,18 @@ implements IoBuffer<T> {
 	 Non-blocking bulk get implementation
 	 @param maxCount the count limit
 	 @param buffer buffer for the items
+	 @throws UnsupportedOperationException
+	 @throws IllegalArgumentException
 	 @return the count of the items been get
-	 @throws IOException if something goes wrong
 	 */
 	@Override
 	public int get(final List<T> buffer, final int maxCount)
-	throws IOException {
-		try {
-			return queue.drainTo(buffer, maxCount);
-		} catch(final UnsupportedOperationException | IllegalArgumentException e) {
-			throw new IOException(e);
-		}
+	throws UnsupportedOperationException, IllegalArgumentException {
+		return queue.drainTo(buffer, maxCount);
 	}
 	
 	@Override
-	public long skip(final long itemsCount)
-	throws IOException {
+	public long skip(final long itemsCount) {
 		try {
 			T item;
 			long i = 0;
@@ -102,7 +92,8 @@ implements IoBuffer<T> {
 			}
 			return i;
 		} catch (final InterruptedException e) {
-			throw new InterruptedIOException(e.getMessage());
+			throwUnchecked(e);
+			return 0;
 		}
 	}
 	
@@ -118,20 +109,16 @@ implements IoBuffer<T> {
 
 	/**
 	 Does nothing
-	 @throws IOException doesn't throw
 	 */
 	@Override
-	public void reset()
-	throws IOException {
+	public void reset() {
 	}
 
 	/**
 	 Does nothing
-	 @throws IOException doesn't throw
 	 */
 	@Override
-	public void close()
-	throws IOException {
+	public void close() {
 		queue.clear();
 	}
 	

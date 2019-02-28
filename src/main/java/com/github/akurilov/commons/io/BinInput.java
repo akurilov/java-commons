@@ -1,9 +1,10 @@
 package com.github.akurilov.commons.io;
 
 import java.io.IOException;
-import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.util.List;
+
+import static com.github.akurilov.commons.lang.Exceptions.throwUnchecked;
 
 /**
  * The item input implementation deserializing the data items from the specified stream
@@ -23,15 +24,19 @@ implements Input<T> {
 	public void setItemsSrc(final ObjectInputStream itemsSrc) {
 		this.itemsSrc = itemsSrc;
 	}
-	
+
+	/**
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 * @throws ClassCastException
+	 */
 	@Override @SuppressWarnings("unchecked")
-	public final T get()
-	throws IOException {
+	public final T get() {
 		if(srcBuff != null && srcBuffPos < srcBuff.length) {
 			return srcBuff[srcBuffPos ++];
 		} else {
 			try {
-				final Object o = itemsSrc.readUnshared();
+				final var o = itemsSrc.readUnshared();
 				if(o instanceof Object[]) {
 					srcBuff = (T[]) o;
 					srcBuffPos = 0;
@@ -39,15 +44,15 @@ implements Input<T> {
 				} else {
 					return (T) o;
 				}
-			} catch(final ClassNotFoundException | ClassCastException e) {
-				throw new InvalidClassException(e.getMessage());
+			} catch(final IOException | ClassNotFoundException | ClassCastException e) {
+				throwUnchecked(e);
 			}
 		}
+		return null;
 	}
 	
 	@Override @SuppressWarnings("unchecked")
-	public final int get(final List<T> dstBuff, final int dstCountLimit)
-	throws IOException {
+	public final int get(final List<T> dstBuff, final int dstCountLimit) {
 		
 		if(srcBuff != null) { // there are a buffered items in the source
 			final int srcCountLimit = srcBuff.length - srcBuffPos;
@@ -80,21 +85,25 @@ implements Input<T> {
 					return 0;
 				}
 			}
-		} catch(final ClassNotFoundException | ClassCastException e) {
-			throw new IOException(e);
+		} catch(final IOException | ClassNotFoundException | ClassCastException e) {
+			throwUnchecked(e);
 		}
+
+		return 0;
 	}
 	
 	@Override
-	public void reset()
-	throws IOException {
-		itemsSrc.reset();
+	public void reset() {
+		try {
+			itemsSrc.reset();
+		} catch(final IOException e) {
+			throwUnchecked(e);
+		}
 		srcBuff = null;
 	}
 	
 	@Override @SuppressWarnings("unchecked")
-	public long skip(final long itemsCount)
-	throws IOException {
+	public long skip(final long itemsCount) {
 		try {
 			Object o;
 			long i = 0;
@@ -117,15 +126,19 @@ implements Input<T> {
 				}
 			}
 			return i;
-		} catch(final ClassNotFoundException e) {
-			throw new IOException(e);
+		} catch(final IOException | ClassNotFoundException e) {
+			throwUnchecked(e);
 		}
+		return 0;
 	}
 	
 	@Override
-	public void close()
-	throws IOException {
-		itemsSrc.close();
+	public void close() {
+		try {
+			itemsSrc.close();
+		} catch(final IOException e) {
+			throwUnchecked(e);
+		}
 		srcBuff = null;
 	}
 	

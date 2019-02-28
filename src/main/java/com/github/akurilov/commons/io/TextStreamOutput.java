@@ -6,6 +6,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
+import static com.github.akurilov.commons.lang.Exceptions.throwUnchecked;
+
 /**
  * The input implementation designed to write the text lines using {@link BufferedWriter}
  */
@@ -19,20 +21,21 @@ implements Output<String> {
 	
 	protected final BufferedWriter writer;
 
-	public TextStreamOutput(final OutputStream out)
-	throws IOException {
+	public TextStreamOutput(final OutputStream out) {
 		writer = new BufferedWriter(new OutputStreamWriter(out));
 	}
 
-	public TextStreamOutput(final OutputStream out, final int buffSize)
-	throws IOException {
+	public TextStreamOutput(final OutputStream out, final int buffSize) {
 		writer = new BufferedWriter(new OutputStreamWriter(out), buffSize);
 	}
 	
 	@Override
-	public boolean put(final String line)
-	throws IOException {
-		writer.write(line + LINE_SEP);
+	public boolean put(final String line) {
+		try {
+			writer.write(line + LINE_SEP);
+		} catch(final IOException e) {
+			throwUnchecked(e);
+		}
 		return true;
 	}
 
@@ -41,15 +44,18 @@ implements Output<String> {
 	 * @throws IOException
 	 */
 	@Override
-	public int put(final List<String> lines, final int from, final int to)
-	throws IOException {
-		final StringBuilder strb = THRLOC_STRB.get();
+	public int put(final List<String> lines, final int from, final int to) {
+		final var strb = THRLOC_STRB.get();
 		strb.setLength(0);
-		for(int i = from; i < to; i ++) {
+		for(var i = from; i < to; i ++) {
 			strb.append(lines.get(i));
 			strb.append(LINE_SEP);
 		}
-		writer.write(strb.toString());
+		try {
+			writer.write(strb.toString());
+		} catch(final IOException e) {
+			throwUnchecked(e);
+		}
 		return to - from;
 	}
 
@@ -58,22 +64,28 @@ implements Output<String> {
 	 * @throws IOException
 	 */
 	@Override
-	public int put(final List<String> lines)
-	throws IOException {
-		final StringBuilder strb = THRLOC_STRB.get();
+	public int put(final List<String> lines) {
+		final var strb = THRLOC_STRB.get();
 		strb.setLength(0);
-		for(final String line : lines) {
+		for(final var line : lines) {
 			strb.append(line);
 			strb.append(LINE_SEP);
 		}
-		writer.write(strb.toString());
+		try {
+			writer.write(strb.toString());
+		} catch(final IOException e) {
+			throwUnchecked(e);
+		}
 		return lines.size();
 	}
 	
 	@Override
-	public void close()
-	throws IOException {
-		writer.flush();
-		writer.close();
+	public void close() {
+		try {
+			writer.flush();
+			writer.close();
+		} catch(final IOException e) {
+			throwUnchecked(e);
+		}
 	}
 }

@@ -21,8 +21,7 @@ extends ListInput<T> {
 	 @return next item
 	 */
 	@Override
-	public T get()
-	throws IOException {
+	public T get() {
 		if(i >= size) {
 			reset();
 		}
@@ -33,11 +32,9 @@ extends ListInput<T> {
 	 @param buffer buffer for the items
 	 @param maxCount the count limit
 	 @return the actual count of the items got in the buffer
-	 @throws EOFException doesn't throw
 	 */
 	@Override
-	public int get(final List<T> buffer, final int maxCount)
-	throws EOFException, IOException {
+	public int get(final List<T> buffer, final int maxCount) {
 		int n = 0;
 		while(n < maxCount) {
 			if(i >= size) {

@@ -26,11 +26,9 @@ extends ListOutput<T> {
 
 	/**
 	 @param item the item to put
-	 @throws IOException if the destination collection fails to add the item
 	 */
 	@Override
-	public boolean put(final T item)
-	throws IOException {
+	public boolean put(final T item) {
 		if(i >= capacity) {
 			i = 0;
 		}
@@ -44,8 +42,7 @@ extends ListOutput<T> {
 	 @return the size of the buffer to put
 	 */
 	@Override
-	public int put(final List<T> buffer, final int from, final int to)
-	throws IOException {
+	public int put(final List<T> buffer, final int from, final int to) {
 		//
 		int n = to - from;
 		if(buffer.size() > n) {
@@ -76,11 +73,9 @@ extends ListOutput<T> {
 
 	/**
 	 @return the corresponding input
-	 @throws IOException doesn't throw
 	 */
 	@Override
-	public CircularListInput<T> getInput()
-	throws IOException {
+	public CircularListInput<T> getInput() {
 		return new CircularListInput<>(new ArrayList<>(items));
 	}
 

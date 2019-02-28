@@ -1,15 +1,13 @@
 package com.github.akurilov.commons.io;
 
-import java.io.Closeable;
-import java.io.EOFException;
-import java.io.IOException;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * The Java objects input supporting the batch calls
  */
 public interface Input<I>
-extends Closeable {
+extends AutoCloseable, Supplier<I> {
 
 	String DELIMITER = ";";
 
@@ -19,8 +17,7 @@ extends Closeable {
 	 @throws java.io.EOFException if no item available more
 	 @throws java.io.IOException if failed to get some-why
 	 */
-	I get()
-	throws EOFException, IOException;
+	I get();
 
 	/**
 	 Bulk items get.
@@ -30,20 +27,18 @@ extends Closeable {
 	 @throws java.io.EOFException if no item available more
 	 @throws java.io.IOException if failed to get some-why
 	 */
-	int get(final List<I> buffer, final int limit)
-	throws IOException;
+	int get(final List<I> buffer, final int limit);
 	
 	/**
 	 * Skip some items.
 	 * @param count count of items should be skipped from the input stream
-	 * @throws IOException if failed to skip such amount of bytes
+	 * @throws java.io.IOException if failed to skip such amount of bytes
 	 */
-	long skip(final long count)
-	throws IOException;
+	long skip(final long count);
 	
 	/**
 	 Reset this input making this readable from the beginning
+	 @throws java.io.IOException
 	 */
-	void reset()
-	throws IOException;
+	void reset();
 }

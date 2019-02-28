@@ -1,6 +1,7 @@
 package com.github.akurilov.commons.io.file;
 
 import com.github.akurilov.commons.io.BinInput;
+import static com.github.akurilov.commons.lang.Exceptions.throwUnchecked;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -21,17 +22,20 @@ implements FileInput<T> {
 	 @param srcPath the path to the file which should be used to restore the serialized items
 	 @throws IOException if unable to open the file for reading
 	 */
-	public BinFileInput(final Path srcPath)
-	throws IOException {
+	public BinFileInput(final Path srcPath) {
 		super(buildObjectInputStream(srcPath));
 		this.srcPath = srcPath;
 	}
 	
-	protected static ObjectInputStream buildObjectInputStream(final Path itemsSrcPath)
-	throws IOException {
-		return new ObjectInputStream(
-			new BufferedInputStream(Files.newInputStream(itemsSrcPath, INPUT_OPEN_OPTIONS))
-		);
+	protected static ObjectInputStream buildObjectInputStream(final Path itemsSrcPath) {
+		try {
+			return new ObjectInputStream(
+				new BufferedInputStream(Files.newInputStream(itemsSrcPath, INPUT_OPEN_OPTIONS))
+			);
+		} catch(final IOException e) {
+			throwUnchecked(e);
+		}
+		return null;
 	}
 	
 	@Override
@@ -40,15 +44,18 @@ implements FileInput<T> {
 	}
 	
 	@Override
-	public final Path getFilePath() {
+	public final Path filePath() {
 		return srcPath;
 	}
 	
 	@Override
-	public void reset()
-	throws IOException {
+	public void reset() {
 		if(itemsSrc != null) {
-			itemsSrc.close();
+			try {
+				itemsSrc.close();
+			} catch(final IOException e) {
+				throwUnchecked(e);
+			}
 		}
 		setItemsSrc(buildObjectInputStream(srcPath));
 	}

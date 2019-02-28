@@ -3,7 +3,7 @@
 ## Gradle
 
 ```groovy
-compile group: 'com.github.akurilov', name: 'java-commons', version: '2.3.0'
+compile group: 'com.github.akurilov', name: 'java-commons', version: '2.3.1'
 ```
 
 # Library Content
@@ -155,6 +155,10 @@ Includes the XorShift and greatest common divisor methods.
 ## Networking
 
 TODO
+
+## Lang
+
+Contains the method `void throwUnchecked(final Throwable t)` allowing to throw checked exceptions as unchecked ones.
 
 ## Reflection
 

@@ -26,7 +26,7 @@ public class BinFileIoTest {
 				nextItem.field2 = Integer.toString(i);
 				itemsOutput.put(nextItem);
 			}
-			itemsFilePath = itemsOutput.getFilePath();
+			itemsFilePath = itemsOutput.filePath();
 		}
 
 		assertNotNull(itemsFilePath);

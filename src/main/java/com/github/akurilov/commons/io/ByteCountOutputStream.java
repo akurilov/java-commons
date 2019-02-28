@@ -1,6 +1,5 @@
 package com.github.akurilov.commons.io;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.concurrent.atomic.LongAdder;
 
@@ -14,20 +13,17 @@ extends OutputStream {
 	}
 
 	@Override
-	public void write(final int b)
-	throws IOException {
+	public void write(final int b) {
 		byteCount.increment();
 	}
 
 	@Override
-	public void write(final byte buff[], final int off, final int len)
-	throws IOException {
+	public void write(final byte buff[], final int off, final int len) {
 		byteCount.add(len);
 	}
 
 	@Override
-	public void write(final byte buff[])
-	throws IOException {
+	public void write(final byte buff[]) {
 		byteCount.add(buff.length);
 	}
 }

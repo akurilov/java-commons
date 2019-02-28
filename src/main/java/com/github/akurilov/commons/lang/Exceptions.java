@@ -1,7 +1,5 @@
 package com.github.akurilov.commons.lang;
 
-import java.io.IOException;
-
 public interface Exceptions {
 
 	@SuppressWarnings("unchecked")

@@ -21,7 +21,7 @@ public class TextFileIoTest {
 			for(int i = 0; i < 123; i ++) {
 				itemsOutput.put(Integer.toString(i));
 			}
-			itemsFilePath = itemsOutput.getFilePath();
+			itemsFilePath = itemsOutput.filePath();
 		}
 
 		assertNotNull(itemsFilePath);

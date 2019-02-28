@@ -2,7 +2,6 @@ package com.github.akurilov.commons.io.collection;
 
 import com.github.akurilov.commons.io.Output;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,12 +19,10 @@ implements Output<T> {
 
 	/**
 	 @param item the item to put
-	 @throws IOException if the destination collection fails to add the item
 	 (due to capacity reasons for example)
 	 */
 	@Override
-	public boolean put(final T item)
-	throws IOException {
+	public boolean put(final T item) {
 		if(i < items.length) {
 			items[i ++] = item;
 			return true;
@@ -38,13 +35,11 @@ implements Output<T> {
 	 Bulk put of the items from the specified buffer
 	 @param buffer the buffer containing the items to put
 	 @return the count of the items which have been written successfully
-	 @throws IOException doesn't throw
 	 */
 	@Override
-	public int put(final List<T> buffer, final int from, final int to)
-	throws IOException {
-		final int n = Math.min(items.length - i, to - from);
-		for(int j = 0; j < n; j ++) {
+	public int put(final List<T> buffer, final int from, final int to) {
+		final var n = Math.min(items.length - i, to - from);
+		for(var j = 0; j < n; j ++) {
 			items[i + j] = buffer.get(from + j);
 		}
 		return n;
@@ -52,28 +47,23 @@ implements Output<T> {
 
 
 	@Override
-	public final int put(final List<T> items)
-	throws IOException {
+	public final int put(final List<T> items) {
 		return put(items, 0, items.size());
 	}
 
 	/**
 	 @return the corresponding input
-	 @throws IOException doesn't throw
 	 */
 	@Override
-	public ArrayInput<T> getInput()
-	throws IOException {
+	public ArrayInput<T> getInput() {
 		return new ArrayInput<>(items);
 	}
 
 	/**
 	 does nothing
-	 @throws IOException doesn't throw
 	 */
 	@Override
-	public void close()
-	throws IOException {
+	public void close() {
 	}
 
 

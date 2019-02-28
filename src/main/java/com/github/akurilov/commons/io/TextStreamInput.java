@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import static com.github.akurilov.commons.lang.Exceptions.throwUnchecked;
+
 /**
  * The input implementation designed to read the text lines from the given input stream using {@link BufferedReader}
  */
@@ -27,11 +29,15 @@ implements Input<String> {
 	 * @return next text line from the given input stream
 	 */
 	@Override
-	public String get()
-	throws EOFException, IOException {
-		final String nextLine = reader.readLine();
+	public String get() {
+		String nextLine = null;
+		try {
+			nextLine = reader.readLine();
+		} catch(final IOException e) {
+			throwUnchecked(e);
+		}
 		if(nextLine == null) {
-			throw new EOFException();
+			throwUnchecked(new EOFException());
 		}
 		return nextLine;
 	}
@@ -43,9 +49,8 @@ implements Input<String> {
 	 * @return the count of the text lines was got
 	 */
 	@Override
-	public int get(final List<String> buffer, final int limit)
-	throws IOException {
-		int i = 0;
+	public int get(final List<String> buffer, final int limit) {
+		var i = 0;
 		try {
 			String nextLine;
 			for(; i < limit; i ++) {
@@ -62,7 +67,7 @@ implements Input<String> {
 			}
 		} catch(final IOException e) {
 			if(i == 0) {
-				throw e;
+				throwUnchecked(e);
 			}
 		}
 		return i;
@@ -72,9 +77,13 @@ implements Input<String> {
 	 * Skips characters instead of lines
 	 */
 	@Override
-	public long skip(final long count)
-	throws IOException {
-		return reader.skip(count);
+	public long skip(final long count) {
+		try {
+			return reader.skip(count);
+		} catch(final IOException e) {
+			throwUnchecked(e);
+		}
+		return count;
 	}
 	
 	/**
@@ -82,14 +91,20 @@ implements Input<String> {
 	 * @throws IOException
 	 */
 	@Override
-	public void reset()
-	throws IOException {
-		reader.reset();
+	public void reset() {
+		try {
+			reader.reset();
+		} catch(final IOException e) {
+			throwUnchecked(e);
+		}
 	}
 	
 	@Override
-	public void close()
-	throws IOException {
-		reader.close();
+	public void close() {
+		try {
+			reader.close();
+		} catch(final IOException e) {
+			throwUnchecked(e);
+		}
 	}
 }

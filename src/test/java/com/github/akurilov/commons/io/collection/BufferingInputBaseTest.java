@@ -31,12 +31,16 @@ public class BufferingInputBaseTest {
 			}
 		};
 		final List<Integer> buff = new ArrayList<>(0x100);
-		int m = 0, k;
+		int m = 0, k = 0;
 		while(true) {
 			try {
 				k = in.get(buff, 0x100);
-			} catch(final EOFException e) {
-				break;
+			} catch(final Exception e) {
+				if(e instanceof EOFException) {
+					break;
+				} else {
+					e.printStackTrace(System.err);
+				}
 			}
 			assertEquals(k, buff.size());
 			buff.clear();
@@ -62,12 +66,16 @@ public class BufferingInputBaseTest {
 			}
 		};
 		final List<Integer> buff2 = new ArrayList<>(100);
-		int m = 0, k;
+		int m = 0, k = 0;
 		while(true) {
 			try {
 				k = in.get(buff2, 100);
-			} catch(final EOFException e) {
-				break;
+			} catch(final Exception e) {
+				if(e instanceof EOFException) {
+					break;
+				} else {
+					e.printStackTrace(System.err);
+				}
 			}
 			assertEquals(k, buff2.size());
 			buff2.clear();

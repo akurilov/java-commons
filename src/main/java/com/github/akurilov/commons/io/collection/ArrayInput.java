@@ -6,6 +6,8 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.util.List;
 
+import static com.github.akurilov.commons.lang.Exceptions.throwUnchecked;
+
 /**
  Java objects array based input. Not thread safe.
  */
@@ -26,13 +28,13 @@ implements Input<T> {
 	 @throws EOFException if there's nothing to get more
 	 */
 	@Override
-	public T get()
-	throws EOFException, IOException {
+	public T get() {
 		if(i < size) {
 			return items[i ++];
 		} else {
-			throw new EOFException();
+			throwUnchecked(new EOFException());
 		}
+		return null;
 	}
 
 	/**
@@ -43,25 +45,23 @@ implements Input<T> {
 	 @throws EOFException if there's nothing to get more
 	 */
 	@Override
-	public int get(final List<T> buffer, final int maxCount)
-	throws EOFException, IOException {
-		int n = size - i;
+	public int get(final List<T> buffer, final int maxCount) {
+		var n = size - i;
 		if(n > 0) {
 			n = Math.min(n, maxCount);
-			for(int j = i; j < i + n; j ++) {
+			for(var j = i; j < i + n; j ++) {
 				buffer.add(items[j]);
 			}
 		} else {
-			throw new EOFException();
+			throwUnchecked(new EOFException());
 		}
 		i += n;
 		return n;
 	}
 
 	@Override
-	public long skip(final long itemsCount)
-	throws IOException {
-		final int remainingCount = size - i;
+	public long skip(final long itemsCount) {
+		final var remainingCount = size - i;
 		if(itemsCount > remainingCount) {
 			i = 0;
 			return remainingCount;
@@ -75,8 +75,7 @@ implements Input<T> {
 	 @throws IOException doesn't throw
 	 */
 	@Override
-	public void reset()
-	throws IOException {
+	public void reset() {
 		i = 0;
 	}
 
@@ -85,8 +84,7 @@ implements Input<T> {
 	 @throws IOException doesn't throw
 	 */
 	@Override
-	public void close()
-	throws IOException {
+	public void close() {
 	}
 
 	@Override

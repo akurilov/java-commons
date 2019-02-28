@@ -6,6 +6,8 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.util.List;
 
+import static com.github.akurilov.commons.lang.Exceptions.throwUnchecked;
+
 /**
  * Readable collection of the items. Not thread safe.
  */
@@ -26,13 +28,13 @@ implements Input<T> {
 	 @throws EOFException if there's nothing to get more
 	 */
 	@Override
-	public T get()
-	throws EOFException, IOException {
+	public T get() {
 		if(i < size) {
 			return items.get(i++);
 		} else {
-			throw new EOFException();
+			throwUnchecked(new EOFException());
 		}
+		return null;
 	}
 
 	/**
@@ -43,8 +45,7 @@ implements Input<T> {
 	 @throws EOFException if there's nothing to get more
 	 */
 	@Override
-	public int get(final List<T> buffer, final int maxCount)
-	throws EOFException, IOException {
+	public int get(final List<T> buffer, final int maxCount) {
 		int n = size - i;
 		if(n > 0) {
 			n = Math.min(n, maxCount);
@@ -52,24 +53,19 @@ implements Input<T> {
 				buffer.add(item);
 			}
 		} else {
-			throw new EOFException();
+			throwUnchecked(new EOFException());
 		}
 		i += n;
 		return n;
 	}
 
-	/**
-	 @throws IOException doesn't throw
-	 */
 	@Override
-	public void reset()
-	throws IOException {
+	public void reset() {
 		i = 0;
 	}
 
 	@Override
-	public long skip(final long itemsCount)
-	throws IOException {
+	public long skip(final long itemsCount) {
 		final int remainingCount = size - i;
 		if(itemsCount > remainingCount) {
 			i = 0;
@@ -82,11 +78,9 @@ implements Input<T> {
 
 	/**
 	 Does nothing
-	 @throws IOException doesn't throw
 	 */
 	@Override
-	public void close()
-	throws IOException {
+	public void close() {
 	}
 
 	@Override
