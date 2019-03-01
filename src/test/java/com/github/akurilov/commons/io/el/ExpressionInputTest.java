@@ -6,6 +6,9 @@ import static java.lang.System.currentTimeMillis;
 import static java.lang.System.nanoTime;
 
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -19,6 +22,7 @@ public class ExpressionInputTest {
 			.type(long.class)
 			.func("time", "millisSinceEpoch", System.class.getMethod("currentTimeMillis"))
 			.build();
+		assertTrue(in instanceof SynchronousExpressionInput);
 		final var t0 = currentTimeMillis();
 		final var t1 = Long.parseLong(in.get().toString());
 		final var t2 = currentTimeMillis();
@@ -27,14 +31,14 @@ public class ExpressionInputTest {
 	}
 
 	@Test
-	public void testMillisSinceEpoch1()
+	public void testMillisSinceEpochDeferred()
 	throws Exception {
 		final var in = ExpressionInput.<Long>builder()
-			.expr("${time:millisSinceEpoch()}")
+			.expr("#{time:millisSinceEpoch()}")
 			.type(long.class)
 			.func("time", "millisSinceEpoch", System.class.getMethod("currentTimeMillis"))
-			.sync(false)
 			.build();
+		assertFalse(in instanceof SynchronousExpressionInput);
 		assertNull(in.get());
 		in.call();
 		final var t0 = currentTimeMillis();
@@ -64,12 +68,12 @@ public class ExpressionInputTest {
 	public void testIota()
 	throws Exception {
 		final var in = ExpressionInput.<Integer>builder()
-			.expr("${x = x + 1}")
-			.initial(0)
+			.expr("${this.last() + 1}")
+			.initial(-1)
 			.type(int.class)
 			.build();
-		System.out.println(in.get());
-		System.out.println(in.get());
-		System.out.println(in.get());
+		assertEquals(0, (int) in.get());
+		assertEquals(1, (int) in.get());
+		assertEquals(2, (int) in.get());
 	}
 }

@@ -18,8 +18,8 @@ implements ExpressionInput<T> {
 
 	ExpressionInputImpl(final String exprStr, final T initial, Class<T> type, final SimpleContext ctx) {
 		this.last = this.initial = initial;
-		final var lastValExpr = FACTORY.createValueExpression(this.last, type);
-		ctx.setVariable(LAST_VALUE_ID, lastValExpr);
+		final var ve = FACTORY.createValueExpression(this, getClass());
+		ctx.setVariable(SELF_REF_ID, ve);
 		this.expr = FACTORY.createValueExpression(ctx, exprStr, type);
 		this.ctx = ctx;
 	}
@@ -33,6 +33,11 @@ implements ExpressionInput<T> {
 	public final T call()
 	throws PropertyNotFoundException, ELException {
 		return last = eval();
+	}
+
+	@Override
+	public final T last() {
+		return last;
 	}
 
 	@Override

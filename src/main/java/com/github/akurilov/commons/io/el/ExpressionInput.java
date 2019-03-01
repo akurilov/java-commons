@@ -17,7 +17,9 @@ import java.util.concurrent.Callable;
 public interface ExpressionInput<T>
 extends Callable<T>, Input<T> {
 
-	String LAST_VALUE_ID = "x";
+	String SELF_REF_ID = "this";
+	String ASYNC_MARKER = "#";
+	String SYNC_MARKER = "$";
 	ExpressionFactory FACTORY = new ExpressionFactoryImpl();
 
 	/**
@@ -28,7 +30,12 @@ extends Callable<T>, Input<T> {
 	T call();
 
 	/**
-	 Get last value. A user should invoke call() method by itself to evaluate the expression if the given expression
+	 * @return the result of the last expression evaluation
+	 */
+	T last();
+
+	/**
+	 Get a value. A user should invoke call() method by itself to evaluate the expression if the given expression
 	 input is not synchronous. The initial value only would be returned otherwise.
 	 @throws PropertyNotFoundException
 	 @throws ELException
@@ -83,8 +90,6 @@ extends Callable<T>, Input<T> {
 		Builder<T> func(final String prefix, final String name, final Method method);
 
 		Builder<T> value(final String name, final Object value, final Class<?> type);
-
-		Builder<T> sync(final boolean syncFlag);
 
 		ExpressionInput<T> build();
 	}

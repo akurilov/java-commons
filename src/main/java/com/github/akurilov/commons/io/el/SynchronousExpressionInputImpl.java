@@ -19,7 +19,12 @@ implements SynchronousExpressionInput<T> {
 	@Override
 	public final T get()
 	throws PropertyNotFoundException, ELException {
-		return call();
+		try {
+			return call();
+		} catch(final Throwable t) {
+			t.printStackTrace(System.err);
+		}
+		return null;
 	}
 
 	@Override
