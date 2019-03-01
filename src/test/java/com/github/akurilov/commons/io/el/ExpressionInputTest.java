@@ -17,10 +17,10 @@ public class ExpressionInputTest {
 	@Test
 	public void testMillisSinceEpoch()
 	throws Exception {
-		final var in = ExpressionInput.<Long>builder()
-			.expr("${time:millisSinceEpoch()}")
+		final var in = ExpressionInput.builder()
+			.expression("${time:millisSinceEpoch()}")
 			.type(long.class)
-			.func("time", "millisSinceEpoch", System.class.getMethod("currentTimeMillis"))
+			.function("time", "millisSinceEpoch", System.class.getMethod("currentTimeMillis"))
 			.build();
 		assertTrue(in instanceof SynchronousExpressionInput);
 		final var t0 = currentTimeMillis();
@@ -33,10 +33,10 @@ public class ExpressionInputTest {
 	@Test
 	public void testMillisSinceEpochDeferred()
 	throws Exception {
-		final var in = ExpressionInput.<Long>builder()
-			.expr("#{time:millisSinceEpoch()}")
+		final var in = ExpressionInput.builder()
+			.expression("#{time:millisSinceEpoch()}")
 			.type(long.class)
-			.func("time", "millisSinceEpoch", System.class.getMethod("currentTimeMillis"))
+			.function("time", "millisSinceEpoch", System.class.getMethod("currentTimeMillis"))
 			.build();
 		assertFalse(in instanceof SynchronousExpressionInput);
 		assertNull(in.get());
@@ -55,10 +55,10 @@ public class ExpressionInputTest {
 			abs(Long.reverse(currentTimeMillis()) ^ Long.reverseBytes(nanoTime())),
 			radix
 		);
-		final var in = ExpressionInput.<String>builder()
+		final var in = ExpressionInput.builder()
 			.value("idSupplier", idSupplier, IntFunction.class)
 			.value("radix", 36, int.class)
-			.expr("prefix_${idSupplier.apply(radix)}")
+			.expression("prefix_${idSupplier.apply(radix)}")
 			.type(String.class)
 			.build();
 		System.out.println(in.get());
@@ -67,8 +67,8 @@ public class ExpressionInputTest {
 	@Test
 	public void testIota()
 	throws Exception {
-		final var in = ExpressionInput.<Integer>builder()
-			.expr("${this.last() + 1}")
+		final var in = ExpressionInput.builder()
+			.expression("${this.last() + 1}")
 			.initial(-1)
 			.type(int.class)
 			.build();

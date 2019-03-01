@@ -18,7 +18,7 @@ implements ExpressionInput.Builder {
 	protected volatile Class<?> type = null;
 
 	@Override
-	public final ExpressionInput.Builder expr(final String expr) {
+	public final ExpressionInput.Builder expression(final String expr) {
 		this.expr = expr;
 		return this;
 	}
@@ -36,7 +36,7 @@ implements ExpressionInput.Builder {
 	}
 
 	@Override
-	public final ExpressionInput.Builder func(final String prefix, final String name, final Method method) {
+	public final ExpressionInput.Builder function(final String prefix, final String name, final Method method) {
 		ctx.setFunction(prefix, name, method);
 		return this;
 	}

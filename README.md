@@ -3,7 +3,7 @@
 ## Gradle
 
 ```groovy
-compile group: 'com.github.akurilov', name: 'java-commons', version: '2.3.2'
+compile group: 'com.github.akurilov', name: 'java-commons', version: '2.3.3'
 ```
 
 # Library Content
@@ -143,6 +143,20 @@ Custom random dynamic string with prefix example:
         .build();
     System.out.println(in.get());
 ```
+
+The most interesting feature is the ability to evaluate the expression on the previous expression result:
+```java
+    final var in = ExpressionInput.builder()
+			.expression("${this.last() + 1}")
+			.initial(0)
+			.type(int.class)
+			.build();
+		in.get(); // will return 1
+		in.get(); // 2
+		in.get(); // 3
+		...
+```
+In other words, it's possible to calculate each next value using the previous one.
 
 ### Text
 

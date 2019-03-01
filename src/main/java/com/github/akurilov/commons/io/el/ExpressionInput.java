@@ -81,13 +81,13 @@ extends Callable<T>, Input<T> {
 
 	interface Builder {
 
-		Builder expr(final String expr);
+		Builder expression(final String expr);
 
 		<T> Builder initial(final T value);
 
 		<T> Builder type(final Class<T> type);
 
-		Builder func(final String prefix, final String name, final Method method);
+		Builder function(final String prefix, final String name, final Method method);
 
 		Builder value(final String name, final Object value, final Class<?> type);
 
