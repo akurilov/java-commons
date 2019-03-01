@@ -79,22 +79,22 @@ extends Callable<T>, Input<T> {
 	 */
 	Class<T> type();
 
-	interface Builder<T> {
+	interface Builder {
 
-		Builder<T> expr(final String expr);
+		Builder expr(final String expr);
 
-		Builder<T> initial(final T value);
+		<T> Builder initial(final T value);
 
-		Builder<T> type(final Class<T> type);
+		<T> Builder type(final Class<T> type);
 
-		Builder<T> func(final String prefix, final String name, final Method method);
+		Builder func(final String prefix, final String name, final Method method);
 
-		Builder<T> value(final String name, final Object value, final Class<?> type);
+		Builder value(final String name, final Object value, final Class<?> type);
 
-		ExpressionInput<T> build();
+		<T, U extends ExpressionInput<T>> U build();
 	}
 
-	static <T> Builder<T> builder() {
-		return new ExpressionInputBuilder<>();
+	static Builder builder() {
+		return new ExpressionInputBuilder();
 	}
 }

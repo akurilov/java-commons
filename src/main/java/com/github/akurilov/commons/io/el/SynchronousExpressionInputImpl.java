@@ -6,11 +6,11 @@ import javax.el.ELException;
 import javax.el.PropertyNotFoundException;
 import java.util.List;
 
-class SynchronousExpressionInputImpl<T>
+public class SynchronousExpressionInputImpl<T>
 extends ExpressionInputImpl<T>
 implements SynchronousExpressionInput<T> {
 
-	SynchronousExpressionInputImpl(
+	public SynchronousExpressionInputImpl(
 		final String exprStr, final T initial, final Class<T> resultType, final SimpleContext ctx
 	) {
 		super(exprStr, initial, resultType, ctx);

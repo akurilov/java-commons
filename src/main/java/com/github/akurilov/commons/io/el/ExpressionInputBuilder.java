@@ -8,41 +8,41 @@ import static com.github.akurilov.commons.io.el.ExpressionInput.ASYNC_MARKER;
 import static com.github.akurilov.commons.io.el.ExpressionInput.FACTORY;
 import static com.github.akurilov.commons.io.el.ExpressionInput.SYNC_MARKER;
 
-public class ExpressionInputBuilder<T>
-implements ExpressionInput.Builder<T> {
+public class ExpressionInputBuilder
+implements ExpressionInput.Builder {
 
 	protected final SimpleContext ctx = new SimpleContext();
 
 	protected volatile String expr = null;
-	protected volatile T initial = null;
-	protected volatile Class<T> type = null;
+	protected volatile Object initial = null;
+	protected volatile Class<?> type = null;
 
 	@Override
-	public final ExpressionInput.Builder<T> expr(final String expr) {
+	public final ExpressionInput.Builder expr(final String expr) {
 		this.expr = expr;
 		return this;
 	}
 
 	@Override
-	public final ExpressionInput.Builder<T> initial(final T value) {
+	public final <T> ExpressionInput.Builder initial(final T value) {
 		this.initial = value;
 		return this;
 	}
 
 	@Override
-	public final ExpressionInput.Builder<T> type(final Class<T> type) {
+	public final <T> ExpressionInput.Builder type(final Class<T> type) {
 		this.type = type;
 		return this;
 	}
 
 	@Override
-	public final ExpressionInput.Builder<T> func(final String prefix, final String name, final Method method) {
+	public final ExpressionInput.Builder func(final String prefix, final String name, final Method method) {
 		ctx.setFunction(prefix, name, method);
 		return this;
 	}
 
 	@Override
-	public final ExpressionInput.Builder<T> value(final String name, final Object val, final Class<?> type) {
+	public final ExpressionInput.Builder value(final String name, final Object val, final Class<?> type) {
 		final var ve = FACTORY.createValueExpression(val, type);
 		ctx.setVariable(name, ve);
 		return this;
@@ -50,7 +50,7 @@ implements ExpressionInput.Builder<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ExpressionInput<T> build() {
+	public <T, U extends ExpressionInput<T>> U build() {
 		if(null == expr) {
 			throw new NullPointerException("Expression shouldn't be null");
 		}
@@ -63,9 +63,9 @@ implements ExpressionInput.Builder<T> {
 					"The expression shouldn't contain both immediate ($) and deferred (#) expression markers"
 				);
 			}
-			return new SynchronousExpressionInputImpl<>(expr, initial, type, ctx);
+			return (U) new SynchronousExpressionInputImpl<>(expr, (T) initial, (Class<T>) type, ctx);
 		} else {
-			return new ExpressionInputImpl<>(expr, initial, type, ctx);
+			return (U) new ExpressionInputImpl<>(expr, (T) initial, (Class<T>) type, ctx);
 		}
 	}
 }

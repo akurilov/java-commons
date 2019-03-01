@@ -8,7 +8,7 @@ import javax.el.PropertyNotFoundException;
 import javax.el.ValueExpression;
 import java.util.List;
 
-class ExpressionInputImpl<T>
+public class ExpressionInputImpl<T>
 implements ExpressionInput<T> {
 
 	private final ValueExpression expr;
@@ -16,7 +16,7 @@ implements ExpressionInput<T> {
 	private final T initial;
 	private volatile T last;
 
-	ExpressionInputImpl(final String exprStr, final T initial, Class<T> type, final SimpleContext ctx) {
+	public ExpressionInputImpl(final String exprStr, final T initial, Class<T> type, final SimpleContext ctx) {
 		this.last = this.initial = initial;
 		final var ve = FACTORY.createValueExpression(this, getClass());
 		ctx.setVariable(SELF_REF_ID, ve);
@@ -85,5 +85,4 @@ implements ExpressionInput<T> {
 	public final void close() {
 		last = null;
 	}
-
 }
