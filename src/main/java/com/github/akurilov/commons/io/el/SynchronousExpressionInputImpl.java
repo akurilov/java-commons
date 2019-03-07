@@ -11,9 +11,9 @@ extends ExpressionInputImpl<T>
 implements SynchronousExpressionInput<T> {
 
 	public SynchronousExpressionInputImpl(
-		final String exprStr, final T initial, final Class<T> resultType, final SimpleContext ctx
+		final String exprStr, final T initial, final SimpleContext ctx
 	) {
-		super(exprStr, initial, resultType, ctx);
+		super(exprStr, initial, ctx);
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import javax.el.PropertyNotFoundException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.regex.Pattern;
 
 /**
  @param <T>
@@ -18,8 +19,10 @@ public interface ExpressionInput<T>
 extends Callable<T>, Input<T> {
 
 	String SELF_REF_ID = "this";
-	String ASYNC_MARKER = "#";
-	String SYNC_MARKER = "$";
+	String ASYNC_MARKER = "#{";
+	String SYNC_MARKER = "${";
+	String INIT_MARKER = "%{";
+	Pattern EXPRESSION_PATTERN = Pattern.compile("([$#]\\{[^}]+})?(%\\{[^}]+})?");
 	ExpressionFactory FACTORY = new ExpressionFactoryImpl();
 
 	/**
@@ -74,24 +77,15 @@ extends Callable<T>, Input<T> {
 	 */
 	String expr();
 
-	/**
-	 @return the result type
-	 */
-	Class<T> type();
-
 	interface Builder {
 
 		Builder expression(final String expr);
-
-		<T> Builder initial(final T value);
-
-		<T> Builder type(final Class<T> type);
 
 		Builder function(final String prefix, final String name, final Method method);
 
 		Builder value(final String name, final Object value, final Class<?> type);
 
-		<T, U extends ExpressionInput<T>> U build();
+		<U extends ExpressionInput<?>> U build();
 	}
 
 	static Builder builder() {

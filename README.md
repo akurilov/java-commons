@@ -3,7 +3,7 @@
 ## Gradle
 
 ```groovy
-compile group: 'com.github.akurilov', name: 'java-commons', version: '2.3.3'
+compile group: 'com.github.akurilov', name: 'java-commons', version: '2.3.4'
 ```
 
 # Library Content
@@ -122,14 +122,13 @@ Current time millis supplying example:
 ```java
     final var in = ExpressionInput.<Long>builder()
         .expr("${time:millisSinceEpoch()}")
-        .type(long.class)
         .func("time", "millisSinceEpoch", System.class.getMethod("currentTimeMillis"))
         .build();
     ...
     System.out.println(in.get());
 ```
 
-Custom random dynamic string with prefix example:
+Custom random dynamic string example:
 ```java
     final IntFunction<String> idSupplier = (radix) -> Long.toString(
         abs(Long.reverse(currentTimeMillis()) ^ Long.reverseBytes(nanoTime())),
@@ -138,8 +137,7 @@ Custom random dynamic string with prefix example:
     final var in = ExpressionInput.<String>builder()
         .value("idSupplier", idSupplier, IntFunction.class)
         .value("radix", 36, int.class)
-        .expr("prefix_${idSupplier.apply(radix)}")
-        .type(String.class)
+        .expr("${idSupplier.apply(radix)}")
         .build();
     System.out.println(in.get());
 ```
@@ -147,13 +145,12 @@ Custom random dynamic string with prefix example:
 The most interesting feature is the ability to evaluate the expression on the previous expression result:
 ```java
     final var in = ExpressionInput.builder()
-			.expression("${this.last() + 1}")
-			.initial(0)
+			.expression("${this.last() + 1}%{-1}")
 			.type(int.class)
 			.build();
-		in.get(); // will return 1
+		in.get(); // will return 0
+		in.get(); // 1
 		in.get(); // 2
-		in.get(); // 3
 		...
 ```
 In other words, it's possible to calculate each next value using the previous one.

@@ -16,11 +16,11 @@ implements ExpressionInput<T> {
 	private final T initial;
 	private volatile T last;
 
-	public ExpressionInputImpl(final String exprStr, final T initial, Class<T> type, final SimpleContext ctx) {
+	public ExpressionInputImpl(final String exprStr, final T initial, final SimpleContext ctx) {
 		this.last = this.initial = initial;
 		final var ve = FACTORY.createValueExpression(this, getClass());
 		ctx.setVariable(SELF_REF_ID, ve);
-		this.expr = FACTORY.createValueExpression(ctx, exprStr, type);
+		this.expr = FACTORY.createValueExpression(ctx, exprStr, Object.class);
 		this.ctx = ctx;
 	}
 
@@ -70,15 +70,9 @@ implements ExpressionInput<T> {
 		return expr.getExpressionString();
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public final Class<T> type() {
-		return (Class<T>) expr.getExpectedType();
-	}
-
 	@Override
 	public final String toString() {
-		return getClass().getSimpleName() + "(" + expr() + ", " + type() + ")";
+		return getClass().getSimpleName() + "(" + expr() + ")";
 	}
 
 	@Override
