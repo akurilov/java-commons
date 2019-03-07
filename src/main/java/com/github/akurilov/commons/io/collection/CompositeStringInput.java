@@ -29,7 +29,14 @@ implements Input<String> {
 			if(segment instanceof String) {
 				strBuilder.append((String) segment);
 			} else if(segment instanceof Input) {
-				strBuilder.append(((Input<String>) segment).get());
+				final var v = ((Input) segment).get();
+				if(null != v) {
+					if(v instanceof String) {
+						strBuilder.append(v);
+					} else {
+						strBuilder.append(v.toString());
+					}
+				}
 			}
 		}
 		final var result = strBuilder.toString();
