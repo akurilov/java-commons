@@ -10,7 +10,7 @@ apply plugin: "java"
 apply plugin: "maven"
 apply plugin: "signing"
 group = "com.github.akurilov"
-version = "2.3.5"
+version = "2.3.6"
 
 sourceCompatibility = 11
 targetCompatibility = 11

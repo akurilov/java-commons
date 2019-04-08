@@ -62,7 +62,7 @@ implements AsyncRunnable {
 				state = STARTED;
 				stateChanged.signalAll();
 			} else {
-				LOG.warning("Not allowed to start while state is \"" + state + "\"");
+				LOG.fine("Not allowed to start while state is \"" + state + "\"");
 			}
 		} finally {
 			stateLock.unlock();
@@ -79,7 +79,7 @@ implements AsyncRunnable {
 				state = SHUTDOWN;
 				stateChanged.signalAll();
 			} else {
-				LOG.warning("Not allowed to shutdown while state is \"" + state + "\"");
+				LOG.fine("Not allowed to start while state is \"" + state + "\"");
 			}
 		} finally {
 			stateLock.unlock();
@@ -99,7 +99,7 @@ implements AsyncRunnable {
 				state = STOPPED;
 				stateChanged.signalAll();
 			} else {
-				LOG.warning("Not allowed to stop while state is \"" + state + "\"");
+				LOG.fine("Not allowed to start while state is \"" + state + "\"");
 			}
 		} finally {
 			stateLock.unlock();
